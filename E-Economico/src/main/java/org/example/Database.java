@@ -3,7 +3,9 @@ package org.example;
 import java.io.File;
 import javax.swing.*;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.*;
+import java.util.Objects;
 
 public class Database {
     private Connection connection = null;
@@ -19,8 +21,7 @@ public class Database {
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
-            //String sql = FileUtils.loadTextFile("E-Economico/src/main/resources/db/descricao.sql");
-            String sql = FileUtils.loadTextFile("src/main/resources/db/descricao.sql");
+            String sql = FileUtils.loadTextFile("E-Economico/src/main/resources/db/descricao.sql");
 
             statement.executeUpdate(sql);
         } catch (Exception e){

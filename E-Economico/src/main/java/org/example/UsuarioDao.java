@@ -1,5 +1,6 @@
 package org.example;
 
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,10 +11,13 @@ import java.util.List;
 public class UsuarioDao {
 
     private Connection con;
-    public UsuarioDao(){
+
+    public UsuarioDao()  {
         con = Database.getInstance().getConnection();
     }
+
     public void insert(Usuario usuario) throws SQLException {
+
         Statement stat = con.createStatement();
         stat.executeUpdate("insert into person values("+ usuario.getId()+ ",'"+ usuario.getName() + "')");
         stat.close();
