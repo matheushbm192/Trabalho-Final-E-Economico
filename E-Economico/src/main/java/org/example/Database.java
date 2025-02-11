@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.File;
 import javax.swing.*;
 import java.io.IOException;
 import java.sql.*;
@@ -9,6 +10,7 @@ public class Database {
 
     private static Database INSTANCE = null;
     String dbPath = "E-Economico/src/main/resources/db/sample.db";
+    //String dbPath = "src/main/resources/db/sample.db";
 
     private Database() {
         try{
@@ -17,7 +19,8 @@ public class Database {
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
-            String sql = FileUtils.loadTextFile("E-Economico/src/main/resources/db/descricao.sql");
+            //String sql = FileUtils.loadTextFile("E-Economico/src/main/resources/db/descricao.sql");
+            String sql = FileUtils.loadTextFile("src/main/resources/db/descricao.sql");
 
             statement.executeUpdate(sql);
         } catch (Exception e){

@@ -20,6 +20,19 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.47.2.0</version>
         </dependency>
+         <!-- Dependência do JFreeChart -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.5.3</version>
+        </dependency>
+
+        <!-- Dependência do JCommon (necessário para JFreeChart) -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jcommon</artifactId>
+            <version>1.0.24</version>
+        </dependency>
     </dependencies>
 
 
