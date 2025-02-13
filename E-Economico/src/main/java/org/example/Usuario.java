@@ -8,6 +8,7 @@ public class Usuario {
     private String email;
     private String senha;
     private String regimeTrab;
+    private float salario;
     //email string, name string, senha string, regime string
     private ArrayList<ReservaEmergencia> reservaEmergencias;
     private ArrayList<Meta> metas;
@@ -15,11 +16,13 @@ public class Usuario {
 
 
 
-
+    public float getSalario(){return salario;}
     public String getNome() {
         return nome;
     }
-
+    public String getRegime() {
+        return regimeTrab;
+    }
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -36,15 +39,18 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public Usuario(String nome, String email, String senha, String regimeTrab){
+    public Usuario(String nome, String email, String senha, String regimeTrab, float salario){
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.regimeTrab = regimeTrab;
+        this.salario = salario;
     }
 
     @Override
     public String toString() {
-        return "email: " + email + "\tName: " + name;
+        return "email: " + email + "\tName: " + nome;
     }
+
+
 }
