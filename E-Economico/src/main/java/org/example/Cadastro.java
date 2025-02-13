@@ -27,14 +27,16 @@ public class Cadastro {
         System.out.print("Media Salarial");
         float salario = scanner.nextFloat();
 
+        //Cria um novo usuário usando os dados fornecidos
         Usuario novoUsuario = new Usuario(nome, email, senha, regimeTrab, salario);
 
         try{
             CadastroDao.insert(novoUsuario);
+            //ComplementoDados.
         }catch (SQLException e ){
             System.err.println("Error ao cadastrar usuario");
         }
-        //Cria um novo usuário usando os dados fornecidos
+        
 
     }
     
