@@ -19,7 +19,7 @@ public class UsuarioDao {
     public void insert(Usuario usuario) throws SQLException {
 
         Statement stat = con.createStatement();
-        stat.executeUpdate("insert into person values("+ usuario.getId()+ ",'"+ usuario.getName() + "')");
+        stat.executeUpdate("insert into person values("+ usuario.getEmail()+ ",'"+ usuario.getName() + "')");
         stat.close();
     }
 
@@ -36,7 +36,7 @@ public class UsuarioDao {
         while(rs.next())
         {
             Usuario usuario = new Usuario();
-            usuario.setId(rs.getInt("id"));
+            usuario.setEmail(rs.getString("email"));
             usuario.setName(rs.getString("name"));
             usuarios.add(usuario);
         }
@@ -49,7 +49,7 @@ public class UsuarioDao {
 
         if(rs.next()){
             Usuario usuario = new Usuario();
-            usuario.setId(rs.getInt("id"));
+            usuario.setEmail(rs.getString("email"));
             usuario.setName(rs.getString("name"));
             stat.close();
             return usuario;
@@ -61,7 +61,7 @@ public class UsuarioDao {
     public void update(Usuario usuario, int id) throws SQLException {
         Statement stat = con.createStatement();
         stat.executeUpdate("update person set name = '" + usuario.getName() +
-                        "',id = " + usuario.getId() +" where person.id = " + id);
+                        "',id = " + usuario.getEmail() +" where person.id = " + id);
         stat.close();
     }
 }

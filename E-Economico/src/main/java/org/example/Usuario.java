@@ -1,15 +1,32 @@
 package org.example;
 
-public class Usuario {
-    private int id;
-    private String name;
+import java.util.ArrayList;
 
-    public int getId() {
-        return id;
+public class Usuario {
+    //email string, name string, senha string, regime string
+
+    private String name;
+    private String email;
+    private String regime;
+    private ArrayList<ReservaEmergencia> reservaEmergencias;
+    private ArrayList<Meta> metas;
+    private ArrayList<DespesasFixas> despesasFixas;
+
+
+    public String getEmail() {
+        return email;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getRegime() {
+        return regime;
+    }
+
+    public void setRegime(String regime) {
+        this.regime = regime;
     }
 
     public String getName() {
@@ -22,6 +39,6 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "ID: " + id + "\tName: " + name;
+        return "email: " + email + "\tName: " + name;
     }
 }
