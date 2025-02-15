@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Cadastro {
 
-    public void cadastrar() {
+    public static void cadastrar() {
         //entrada de dados
         Scanner scanner = new Scanner(System.in);
 
@@ -27,15 +27,13 @@ public class Cadastro {
         System.out.print("Media Salarial");
         float salario = scanner.nextFloat();
 
-        //Cria um novo usuário usando os dados fornecidos
-        Usuario novoUsuario = new Usuario(nome, email, senha, regimeTrab, salario);
 
-        try{
-            CadastroDao.insert(novoUsuario);
-            //ComplementoDados.
-        }catch (SQLException e ){
-            System.err.println("Error ao cadastrar usuario");
-        }
+        CadastroDao cadastroDao = new CadastroDao();
+        cadastroDao.insert(nome,email,senha,regimeTrab,salario);
+
+
+
+
         
 
     }

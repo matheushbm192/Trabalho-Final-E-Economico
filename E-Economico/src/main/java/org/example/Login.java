@@ -1,10 +1,13 @@
 package org.example;
 
+import java.sql.SQLException;
 import java.util.Scanner;
+
+
 
 public class Login {
 
-    public void login() {
+    public static Usuario login()  {
         //entrada de dados
         Scanner scanner = new Scanner(System.in);
 
@@ -16,17 +19,23 @@ public class Login {
 
         System.out.print("Senha: ");
         String senha = scanner.nextLine();
+        Usuario usuarioVez = null;
+        LoginDao loginDao = new LoginDao();
 
         //chama função que valida usuário
-        Usuario usuarioVez = LoginDao.validaUsuario(email, senha);
-        
+        usuarioVez = loginDao.validaUsuario(email, senha);
+
         if(usuarioVez != null){
-            //chamo alguma classe
+            return usuarioVez;
         }else{
             System.out.println();
             System.out.println("Login não encontrado no sistema. Tente novamente.");
-            login();
+            usuarioVez = Login.login();
         }
+
+        return usuarioVez;
     }
+
+
 
 }
