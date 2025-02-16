@@ -11,8 +11,8 @@ public class Database {
     private Connection connection = null;
 
     private static Database INSTANCE = null;
-    String dbPath = "Trabalho-Final-E-Economico/E-Economico/src/main/resources/db/sample.db";
-    //String dbPath = "src/main/resources/db/sample.db";
+    //String dbPath = "Trabalho-Final-E-Economico/E-Economico/src/main/resources/db/sample.db";
+    String dbPath = "E-Economico/src/main/resources/db/sample.db";
 
     private Database() {
         try{
@@ -21,7 +21,9 @@ public class Database {
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
-            String sql = FileUtils.loadTextFile("Trabalho-Final-E-Economico/E-Economico/src/main/resources/db/descricao.sql");
+            //String sql = FileUtils.loadTextFile("Trabalho-Final-E-Economico/E-Economico/src/main/resources/db/descricao.sql");
+            String sql = FileUtils.loadTextFile("E-Economico/src/main/resources/db/descricao.sql");
+
 
             statement.executeUpdate(sql);
         } catch (Exception e){

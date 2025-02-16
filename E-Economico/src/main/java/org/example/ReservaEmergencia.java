@@ -1,6 +1,15 @@
 package org.example;
 
 public class ReservaEmergencia extends OperacaoConta implements OperacaoFinanceira{
+    private float reservaEmergencia;
+
+    public ReservaEmergencia(float valorReserva) {
+      this.reservaEmergencia = reservaEmergencia;
+    }
+
+    public float getReservaEmergencia() {
+        return reservaEmergencia;
+    }
 
     @Override
     public void debitar() {

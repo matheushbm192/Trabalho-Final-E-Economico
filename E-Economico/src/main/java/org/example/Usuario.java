@@ -13,6 +13,7 @@ public class Usuario {
     private ArrayList<ReservaEmergencia> reservaEmergencias;
     private ArrayList<Meta> metas;
     private ArrayList<DespesasFixas> despesasFixas;
+    
 
 
 
