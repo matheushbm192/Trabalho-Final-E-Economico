@@ -3,7 +3,7 @@ package org.example;
 public class ReservaEmergencia extends OperacaoConta implements OperacaoFinanceira{
     private float reservaEmergencia;
 
-    public ReservaEmergencia(float valorReserva) {
+    public ReservaEmergencia(float reservaEmergencia) {
       this.reservaEmergencia = reservaEmergencia;
     }
 

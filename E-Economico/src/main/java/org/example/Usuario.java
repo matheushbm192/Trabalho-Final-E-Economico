@@ -10,12 +10,8 @@ public class Usuario {
     private String regimeTrab;
     private float salario;
     //email string, name string, senha string, regime string
-    private ArrayList<ReservaEmergencia> reservaEmergencias;
-    private ArrayList<Meta> metas;
-    private ArrayList<DespesasFixas> despesasFixas;
+    public ComplementoDados complemento;
     
-
-
 
     public float getSalario(){return salario;}
     public String getNome() {
@@ -46,6 +42,8 @@ public class Usuario {
         this.senha = senha;
         this.regimeTrab = regimeTrab;
         this.salario = salario;
+        this.complemento = new ComplementoDados(email);
+
     }
 
     @Override

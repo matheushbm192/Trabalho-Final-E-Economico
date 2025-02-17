@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ComplementoDao {
+
     private Connection con;
 
     public ComplementoDao() {
@@ -53,5 +54,15 @@ public class ComplementoDao {
         } catch (SQLException e) {
             System.err.println("Erro ao inserir dados no banco: " + e.getMessage());
         }
+    }
+
+    public ReservaEmergencia selectReservaEmergencia(String email) {
+
+    }
+
+    public ArrayList<Meta> selectMetas() {
+    }
+
+    public ArrayList<DespesasFixas> selectDespesasFixas() {
     }
 }
