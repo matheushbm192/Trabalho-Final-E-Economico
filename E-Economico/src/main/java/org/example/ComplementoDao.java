@@ -56,9 +56,7 @@ public class ComplementoDao {
         }
     }
 
-    public ReservaEmergencia selectReservaEmergencia(String email) {
 
-    }
 
     public ArrayList<Meta> selectMetas() {
     }

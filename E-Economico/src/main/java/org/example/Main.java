@@ -56,11 +56,12 @@ public class Main {
             }
         }
 
-        /*deseja realizar cadastro ou fazer login
-        salario
-        despesas fixas
-        debito ou deposito
-        metas
+        /*
+        deseja modificar meta -
+        deseja adicionar meta
+        excluir -
+        ...
+
         reservas de emergencia
          */
     }
