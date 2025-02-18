@@ -27,10 +27,7 @@ public class ComplementoDados {
         return dao.selectMetas();
     }
 
-    private ReservaEmergencia getReservaEmergencia(String email) {
-        ComplementoDao dao = new ComplementoDao();
-        return dao.selectReservaEmergencia(email);
-    }
+
 
 
     public void registrarMeta(){
@@ -127,7 +124,7 @@ public class ComplementoDados {
         }
         System.out.print("Informe o valor da sua reserva de emergência: ");
         float valorReserva = entrada.nextFloat();
-        this.reservaEmergencia = new ReservaEmergencia(valorReserva);
+
 
         dao.insertComplementos(usuarioVez.getEmail(), arrMetas, arrDespesasFixas, reservaEmergencia);
     }

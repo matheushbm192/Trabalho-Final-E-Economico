@@ -1,14 +1,32 @@
 package org.example;
 
 public class ReservaEmergencia extends OperacaoConta implements OperacaoFinanceira{
-    private float reservaEmergencia;
+    private String nome;
+    private float valor;
+    private float montante;
 
-    public ReservaEmergencia(float reservaEmergencia) {
-      this.reservaEmergencia = reservaEmergencia;
+    public String getNome() {
+        return nome;
     }
 
-    public float getReservaEmergencia() {
-        return reservaEmergencia;
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public float getValor() {
+        return valor;
+    }
+
+    public void setValor(float valor) {
+        this.valor = valor;
+    }
+
+    public float getMontante() {
+        return montante;
+    }
+
+    public void setMontante(float montante) {
+        this.montante = montante;
     }
 
     @Override
@@ -34,4 +52,6 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'modificarInformacoes'");
     }
+
+
 }
