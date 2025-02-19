@@ -1,13 +1,25 @@
 package org.example;
 
 public class Meta extends OperacaoConta implements OperacaoFinanceira{
+    private String email;
     private String nomeMeta;
-    private Float valorMeta;
-    private double capitalAcumulado;
+    private float valorMeta;
+    private float montante;
     
-    public Meta(String nomeMeta, float valorMeta) {
+    public Meta(String email) {
+       this.email = email;
+    }
+
+    public void setNomeMeta(String nomeMeta) {
         this.nomeMeta = nomeMeta;
+    }
+
+    public void setValorMeta(Float valorMeta) {
         this.valorMeta = valorMeta;
+    }
+
+    public void setMontante(float montante) {
+        this.montante = montante;
     }
 
     public double getCapitalAcumulado() {
