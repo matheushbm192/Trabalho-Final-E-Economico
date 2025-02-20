@@ -1,6 +1,7 @@
 package org.example;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,7 +18,7 @@ public class MetaDao {
         try {
             ArrayList<Meta> metas = new ArrayList<>();
             Statement stat = con.createStatement();
-            ResultSet resultadoss = stat.executeQuery("select * from metas where email = '" + email + "'");
+            ResultSet resultadoss = stat.executeQuery("select * from meta where email = '" + email + "'");
             while (resultadoss.next()) {
                 Meta meta = new Meta(email);
                 meta.setNomeMeta(resultadoss.getString("nome"));
@@ -33,21 +34,21 @@ public class MetaDao {
     }
 
     public Meta selectMeta(String email, String nome) {
-        try {
-            Statement stat = con.createStatement();
-            ResultSet resultado = stat
-                    .executeQuery("select * from meta where email = '" + email + "', AND nome = '" + nome + "'");
+        String sql = "SELECT * FROM meta WHERE email = ? AND nome = ?";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            stmt.setString(2, nome);
+            ResultSet resultado = stmt.executeQuery();
 
-            Meta meta = new Meta(email);
-            meta.setNomeMeta(resultado.getString("nome"));
-            meta.setValorMeta(resultado.getFloat("valor"));
-            meta.setMontante(resultado.getFloat("montante"));
-            stat.close();
-
-            return meta;
-
+            if (resultado.next()) {
+                Meta meta = new Meta(email);
+                meta.setNomeMeta(resultado.getString("nome"));
+                meta.setValorMeta(resultado.getFloat("valor"));
+                meta.setMontante(resultado.getFloat("montante"));
+                return meta;
+            }
         } catch (SQLException e) {
-            System.err.println("Erro ao buscar Meta" + e);
+            System.err.println("Erro ao buscar Meta: " + e.getMessage());
         }
         return null;
     }
@@ -97,7 +98,7 @@ public class MetaDao {
             stat.executeUpdate("update meta set montante = montante + " + valorDeposito + " where email = '" + email
                     + "'AND nome = '" + nome + "'");
             stat.close();
-            //todo: debitar do saldo atual
+            // todo: debitar do saldo atual
         } catch (SQLException e) {
             System.err.println("Erro ao depositar valor na Meta" + e);
         }

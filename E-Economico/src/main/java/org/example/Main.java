@@ -15,7 +15,9 @@ public class Main {
     public static void main(String[] args) {
         Usuario usuario = Login.login();
         System.out.println(usuario.getNome());
-        usuario.complemento.registrarDesepesaFixa();
+        Meta meta = new Meta(usuario.getEmail());
+        meta.menu();
+        
 
         while (true) {
             System.out.println("O que deseja consultar/manipular? (Tecle o numero referente a ação)");
@@ -50,14 +52,5 @@ public class Main {
                     System.out.println("O valor inserido não é valido ,insira novamente!");
             }
         }
-
-        /*
-         * deseja modificar meta -
-         * deseja adicionar meta
-         * excluir -
-         * ...
-         * 
-         * reservas de emergencia
-         */
     }
 }

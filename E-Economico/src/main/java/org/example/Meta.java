@@ -1,6 +1,11 @@
 package org.example;
 
+import java.util.ArrayList;
 import java.util.Scanner;
+
+import javax.swing.SwingUtilities;
+
+import org.jfree.data.category.DefaultCategoryDataset;
 
 public class Meta extends OperacaoConta implements OperacaoFinanceira {
     private String email;
@@ -32,9 +37,26 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
         return valorMeta;
     }
 
+    public float getMontante() {
+        return montante;
+    }
+
+    MetaDao dao = new MetaDao();
+
     @Override
     public void exibirInformacoes() {
-        //exibir gráficos 
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        ArrayList<Meta> metas = dao.selectMetas(email);
+        
+        if (metas != null) {
+            for (Meta meta : metas) {
+                dataset.addValue(meta.getValorMeta(), "Valor da Meta", meta.getNomeMeta());
+                dataset.addValue(meta.getMontante(), "Montante Depositado", meta.getNomeMeta());
+                System.out.println(meta.getNomeMeta());
+            }
+        }
+    
+        new BarChart("Progresso das Metas", "Metas", "Valores", dataset);
     }
 
     Scanner entrada = new Scanner(System.in);
@@ -54,7 +76,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
                 System.out.println("Não há saldo suficiente na meta para esta retirada.");
             } else {
                 dao.UpdateDebitarMontanteMeta(email, nome, valorDebito);
-                //todo: acrescentar ao saldo atual 
+                // todo: acrescentar ao saldo atual
             }
         }
     }
@@ -68,14 +90,12 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
             System.out.println("Essa meta não existe.");
         } else {
             System.out.println("Informe o valor que deseja depositar: ");
-            //analisar se ele tem saldo sufuciente para o deposito
+            // analisar se ele tem saldo sufuciente para o deposito
             float valorDeposito = entrada.nextFloat();
             dao.UpdateDepositarValorMeta(email, nome, valorDeposito);
             // retirar do saldo atual
         }
     }
-
-    MetaDao dao = new MetaDao();
 
     public void menu() {
 
@@ -89,7 +109,6 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
         System.out.println("7- Modificar valor da meta");
         System.out.println("8- Sair;");
 
-        
         int resposta = entrada.nextInt();
 
         switch (resposta) {
