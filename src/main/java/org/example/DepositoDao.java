@@ -31,12 +31,15 @@ public class DepositoDao {
         }
     }
 
-    public ArrayList<Deposito> selectDepositos(String email) {
+    public ArrayList<Deposito> selectDepositos(String email, LocalDate data) {
+        int dataMes = data.getMonthValue();
+        int dataAno = data.getYear();
 
         try {
             ArrayList<Deposito> depositos = new ArrayList<>();
             Statement stat = con.createStatement();
-            ResultSet resultado = stat.executeQuery("select * from fluxoCaixaDeposito where email = '" + email + "'");
+            ResultSet resultado = stat.executeQuery("select * from fluxoCaixaDeposito where email = '" + email +  "'" +
+                    " and CAST(strftime('%m', data) AS INTEGER) = " + dataMes + "and CAST(strftime('%Y', data)AS INTEGER) = " + dataAno);
 
             while(resultado.next()){
                 Deposito deposito = new Deposito(email);

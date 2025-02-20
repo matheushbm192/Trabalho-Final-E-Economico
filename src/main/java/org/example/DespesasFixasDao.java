@@ -52,12 +52,15 @@ public class DespesasFixasDao {
         }
     }
 
-    public ArrayList<DespesasFixas> selectDespesaFixas(String email) {
+    public ArrayList<DespesasFixas> selectDespesaFixas(String email, LocalDate data) {
+        int dataMes = data.getMonthValue();
+        int dataAno = data.getYear();
 
         try {
             ArrayList<DespesasFixas> despesasFixas = new ArrayList<>();
             Statement stat = con.createStatement();
-            ResultSet resultado = stat.executeQuery("select * from despesasFixas where email = '" + email + "'");
+            ResultSet resultado = stat.executeQuery("select * from despesasFixas where email = '" + email + "'" +
+                    " and CAST(strftime('%m', data) AS INTEGER) = " + dataMes + "and CAST(strftime('%Y', data)AS INTEGER) = " + dataAno);
             //create table if not exists despesasFixas (email string, nome string, valor float, data date);
             while(resultado.next()){
                 DespesasFixas despesa = new DespesasFixas(email);
