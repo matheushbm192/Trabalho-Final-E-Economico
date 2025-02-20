@@ -18,8 +18,7 @@ public class ReservaEmergenciaDao {
             Statement stat = con.createStatement();
             ResultSet resultado = stat.executeQuery("select * from reservaEmergencia where email = '" + email + "'");
 
-            ReservaEmergencia reserva = new ReservaEmergencia();
-            reserva.setNome(resultado.getString("nome"));
+            ReservaEmergencia reserva = new ReservaEmergencia(email);
             reserva.setValor(resultado.getFloat("valor"));
             reserva.setMontante(resultado.getFloat("montante"));
             stat.close();
