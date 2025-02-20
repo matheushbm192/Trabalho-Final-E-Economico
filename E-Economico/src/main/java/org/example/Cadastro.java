@@ -6,14 +6,7 @@ import java.util.Scanner;
 public class Cadastro {
 
     public static boolean cadastrar() {
-       /*  Scanner entrada = new Scanner(System.in);
-        System.out.println("Você já possui cadastro? (s/n)");
-        String resposta = entrada.nextLine();
-            resposta = resposta.equalsIgnoreCase(resposta);
-            if(true){
-                return false;
-            }else{*/
-        //entrada de dados
+      
         Scanner scanner = new Scanner(System.in);
 
         //dados para o cadastro
@@ -39,7 +32,7 @@ public class Cadastro {
         cadastroDao.insert(nome,email,senha,regimeTrab,salario);
 
         return true;
-            //}
+        
 
 
         
