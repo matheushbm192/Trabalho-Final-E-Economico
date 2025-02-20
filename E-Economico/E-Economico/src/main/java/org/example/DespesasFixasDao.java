@@ -15,35 +15,11 @@ public class DespesasFixasDao {
 
     //fazer esse
     public DespesasFixas selectDespesaFixa(String email, String nome){
-        try{
-            Statement stat = con.createStatement();
-            ResultSet resultado = stat.executeQuery("select * from despesasFixas where email = '" + email + "'");
-            if(resultado.next()){
-                DespesasFixas despesa = new DespesasFixas(email);
-                despesa.setNomeDespesa(resultado.getString("nome"));
-                despesa.setValorDespesa(resultado.getFloat("valor"));
-                despesa.setData(resultado.getDate("data").toLocalDate());
-                return despesa;
-            }else{
-                return null;
-            }
-        } catch (SQLException e) {
-            System.err.println("Erro ao buscar Despesas fixas" + e);
-        }
-
-        return null;
+        return despesa; 
     }
     //fazer esse
     public void UpdateValorDespesa(String email, String nome, float valorDesejado){
-        try {
-            Statement stat = con.createStatement();
-            stat.executeUpdate("update despesasFixas set valor = " + valorDesejado + " where email = '" + email
-                    + "' AND nome = '" + nome + "'");
-            stat.close();
 
-        } catch (SQLException e) {
-            System.err.println("Erro ao atualizar valor da despesa fixa");
-        }
     }
 
     public ArrayList<DespesasFixas> selectDespesaFixas(String email) {

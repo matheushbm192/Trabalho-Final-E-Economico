@@ -37,7 +37,7 @@ public class DepositoDao {
             ArrayList<Deposito> depositos = new ArrayList<>();
             Statement stat = con.createStatement();
             ResultSet resultado = stat.executeQuery("select * from fluxoCaixaDeposito where email = '" + email + "'");
-            System.out.println("sobe");
+
             while(resultado.next()){
                 Deposito deposito = new Deposito(email);
                 deposito.setValor(resultado.getFloat("deposito"));
