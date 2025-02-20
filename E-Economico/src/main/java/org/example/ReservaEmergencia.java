@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class ReservaEmergencia extends OperacaoConta implements OperacaoFinanceira {
     private float valor;
-    private float montante;
     private String email;
 
     public ReservaEmergencia(String email) {
@@ -19,24 +18,51 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
         this.valor = valor;
     }
 
-    public float getMontante() {
-        return montante;
-    }
-
-    public void setMontante(float montante) {
-        this.montante = montante;
-    }
-
     @Override
     public void debitar() {
+        Scanner entrada = new Scanner(System.in);
+        boolean validacao = verificaReserva();
+        if (validacao == false) {
+            System.out.println("Você não possui reserva cadastrada para debitar.");
+        } else {
+            System.out.println("Informe o valor que deseja debitar: ");
+            float valor = entrada.nextFloat();
+            boolean validaValor = validaMontante(valor);
+            if(validaValor == false){
+            System.out.println("Não há saldo suficiente na reserva para esta retirada.");
+            }else{
+                dao.updateDebitarReservaEmergencia(email, valor);
+            // adicionar ao saldo atual
+            }
+            
+        }
     }
 
     @Override
     public void debositar() {
+        ;
+        Scanner entrada = new Scanner(System.in);
+        boolean validacao = verificaReserva();
+        if (validacao == false) {
+            System.out.println("Você não possui reserva cadastrada para depositar.");
+        } else {
+            System.out.println("Informe o valor que deseja depositar: ");
+            float valor = entrada.nextFloat();
+            dao.updateDepositarReservaEmergencia(email, valor);
+            // retirar do saldo atual
+        }
     }
 
     @Override
+
     public void exibirInformacoes() {
+        boolean validacao = verificaReserva();
+        if (validacao == false) {
+            System.out.println("Você não possui reserva");
+        } else {
+            ReservaEmergencia reserva = dao.selectReservaEmergencia(email);
+            System.out.println("O valor da reserva de emergência é: R$" + reserva.getValor());
+        }
     }
 
     @Override
@@ -47,13 +73,12 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
 
     public void menu() {
 
-        System.out.println("Menu de reserva de emergência:");
-        System.out.println("1- Crie sua primeira reserva de emergência");
+        System.out.println("Menu reserva de emergência:");
+        System.out.println("1- Crie sua primeira reserva de emergência;");
         System.out.println("2- Exibir;");
         System.out.println("3- Depositar;");
         System.out.println("4- Debitar;");
-        System.out.println("5- Deletar;");
-        System.out.println("6- Sair");
+        System.out.println("5- Sair;");
 
         Scanner entrada = new Scanner(System.in);
         int resposta = entrada.nextInt();
@@ -63,19 +88,16 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
                 registrarReservaEmergencia();
                 break;
             case 2:
-
+                exibirInformacoes();
                 break;
             case 3:
-                // chamar função dao
+                debositar();
                 break;
             case 4:
-                // chamar função dao
+                debitar();
                 break;
-            case 4:
-                // chamar função dao
-                break;
-            case 4:
-                // chamar função dao
+            case 5:
+                // sair();
                 break;
 
             default:
@@ -98,24 +120,34 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
     public void registrarReservaEmergencia() {
 
         boolean validacao = verificaReserva();
-        if(validacao == true){
+        if (validacao == true) {
             System.out.println("Você já possui reserva de emergência cadastrada. ");
-        }else{
-        
-        Scanner entrada = new Scanner(System.in);
+        } else {
 
-        System.out.print("Digite o valor da reserva: ");
-        valor = entrada.nextFloat();
-        dao.insertReservaEmergencia();
-        //retirar o valor do saldo atual 
+            Scanner entrada = new Scanner(System.in);
+
+            System.out.print("Digite o valor da reserva: ");
+            valor = entrada.nextFloat();
+            // verifica se ele tem saldo sufuciente para isso
+            // debitar o saldo atual
+            dao.insertReservaEmergencia(email, valor);
 
         }
-        
+
     }
 
-    public void exibeReserva() {
-        ReservaEmergencia reserva = dao.selectReservaEmergencia(email);
-        System.out.println("O valor da reserva de emergência é: R$" + reserva);
+    public boolean validaMontante(float valor){
+        ReservaEmergencia resreva = dao.selectReservaEmergencia(email);
+        if(valor>resreva.getValor()){
+            return false; 
+        }else{
+            return true; 
+                }
+
+    }
+
+    public void sair() {
+        // voltar para main
     }
 
 }

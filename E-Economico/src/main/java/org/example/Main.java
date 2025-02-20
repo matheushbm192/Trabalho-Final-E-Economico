@@ -13,16 +13,11 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        /*boolean validacao = Cadastro.cadastrar();
-        if (!validacao) {
-            Usuario teste = Login.login();
-        } else {*/
-            Usuario usuario = Login.login();
-            System.out.println(usuario.getNome());
-            usuario.complemento.registrarDesepesaFixa();
+        Usuario usuario = Login.login();
+        System.out.println(usuario.getNome());
+        usuario.complemento.registrarDesepesaFixa();
 
-        //}
-        while(true){
+        while (true) {
             System.out.println("O que deseja consultar/manipular? (Tecle o numero referente a ação)");
             System.out.println("1 - Salario");
             System.out.println("2 - Despesas fixas");
@@ -32,7 +27,7 @@ public class Main {
             System.out.println("6 - Fluxo de caixa");
             Scanner entrada = new Scanner(System.in);
             int escolha = entrada.nextInt();
-            switch (escolha){
+            switch (escolha) {
                 case 1:
                     usuario.modificarSalario();
                     break;
@@ -57,12 +52,12 @@ public class Main {
         }
 
         /*
-        deseja modificar meta -
-        deseja adicionar meta
-        excluir -
-        ...
-
-        reservas de emergencia
+         * deseja modificar meta -
+         * deseja adicionar meta
+         * excluir -
+         * ...
+         * 
+         * reservas de emergencia
          */
     }
 }

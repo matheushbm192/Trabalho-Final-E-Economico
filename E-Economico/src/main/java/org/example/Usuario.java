@@ -9,7 +9,6 @@ public class Usuario {
     private String senha;
     private String regimeTrab;
     private float salario;
-    //email string, name string, senha string, regime string
     public ComplementoDados complemento;
     
 
