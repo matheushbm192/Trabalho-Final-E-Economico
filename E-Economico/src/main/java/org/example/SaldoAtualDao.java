@@ -38,7 +38,6 @@ public class SaldoAtualDao {
             stat.executeUpdate(
                     "update saldoAtual set valor = valor - " + valor + " where email = '" + email + "'");
             stat.close();
-            // todo: tirar do saldo atual
         } catch (SQLException e) {
             System.err.println("Erro ao debitar em saldoAtual");
         }
@@ -49,7 +48,6 @@ public class SaldoAtualDao {
             stat.executeUpdate(
                     "update saldoAtual set valor = valor + " + valor + " where email = '" + email + "'");
             stat.close();
-            // todo: tirar do saldo atual
         } catch (SQLException e) {
             System.err.println("Erro ao depositar em saldoAtual");
         }

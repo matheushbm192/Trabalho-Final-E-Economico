@@ -8,25 +8,23 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
 
     public static void main(String[] args) {
         Usuario usuario = Login.login();
         System.out.println(usuario.getNome());
-        usuario.complemento.registrarDesepesaFixa();
 
         while (true) {
             System.out.println("O que deseja consultar/manipular? (Tecle o numero referente a ação)");
             System.out.println("1 - Salario");
             System.out.println("2 - Despesas fixas");
-            System.out.println("3 - Debito ou deposito");
+            System.out.println("3 - Inserir Debito ou deposito");
             System.out.println("4 - Metas");
             System.out.println("5 - Reserva de Emergencia");
-            System.out.println("6 - Fluxo de caixa");
+            System.out.println("6 - Exibir Fluxo de caixa");
             Scanner entrada = new Scanner(System.in);
             int escolha = entrada.nextInt();
+            entrada.nextLine();
             switch (escolha) {
                 case 1:
                     usuario.modificarSalario();
@@ -35,7 +33,7 @@ public class Main {
                     usuario.modificarDespesasFixas();
                     break;
                 case 3:
-                    usuario.modificarDebitoDeposito();
+                    usuario.inserirDebitoDeposito();
                     break;
                 case 4:
                     usuario.modificarMetas();
@@ -51,13 +49,7 @@ public class Main {
             }
         }
 
-        /*
-         * deseja modificar meta -
-         * deseja adicionar meta
-         * excluir -
-         * ...
-         * 
-         * reservas de emergencia
-         */
+        
     }
+    
 }

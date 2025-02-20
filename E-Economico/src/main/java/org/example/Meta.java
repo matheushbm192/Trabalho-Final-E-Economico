@@ -1,6 +1,11 @@
 package org.example;
 
+import java.util.ArrayList;
 import java.util.Scanner;
+
+import javax.swing.SwingUtilities;
+
+import org.jfree.data.category.DefaultCategoryDataset;
 
 public class Meta extends OperacaoConta implements OperacaoFinanceira {
     private String email;
@@ -34,9 +39,27 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
         return valorMeta;
     }
 
+    public float getMontante() {
+        return montante;
+    }
+
+    MetaDao dao = new MetaDao();
+    SaldoAtualDao saldoDao = new SaldoAtualDao();
+
     @Override
     public void exibirInformacoes() {
-        //exibir gráficos 
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        ArrayList<Meta> metas = dao.selectMetas(email);
+        
+        if (metas != null) {
+            for (Meta meta : metas) {
+                dataset.addValue(meta.getValorMeta(), "Valor da Meta", meta.getNomeMeta());
+                dataset.addValue(meta.getMontante(), "Montante Depositado", meta.getNomeMeta());
+                System.out.println(meta.getNomeMeta());
+            }
+        }
+    
+        new BarChart("Progresso das Metas", "Metas", "Valores", dataset);
     }
 
     Scanner entrada = new Scanner(System.in);
@@ -52,12 +75,14 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
         } else {
             System.out.println("Informe o valor que você deseja debitar: ");
             float valorDebito = entrada.nextFloat();
+            entrada.nextLine();
             boolean validaValor = validaMontante(valorDebito, nome);
             if (validaValor == false) {
                 System.out.println("Não há saldo suficiente na meta para esta retirada.");
             } else {
                 dao.UpdateDebitarMontanteMeta(email, nome, valorDebito);
-                //todo: acrescentar ao saldo atual 
+                saldoDao.updateDepositoSaldo(nome, valorDebito);
+                // todo: acrescentar ao fluxo de caixa 
             }
         }
     }
@@ -72,19 +97,26 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
             System.out.println("Essa meta não existe.");
         } else {
             System.out.println("Informe o valor que deseja depositar: ");
-            //analisar se ele tem saldo sufuciente para o deposito
-            float valorDeposito = entrada.nextFloat();
-            dao.UpdateDepositarValorMeta(email, nome, valorDeposito);
-            // retirar do saldo atual
+            float valor = entrada.nextFloat();
+            entrada.nextLine();
+            boolean validaSaldo = validaSaldo(valor);
+            if (validaSaldo == false) {
+                System.out.println("Você não possui saldo sufuciente para completar esse deposito");
+            } else {
+                dao.UpdateDepositarValorMeta(email, nome, valor);
+                saldoDao.updateDebitoSaldo(email, valor);
+            }
+            // adicionar ao fluxo de caixa
         }
     }
+
 
 
 
     public void menu() {
 
         System.out.println("Menu metas:");
-        System.out.println("1- Crie sua primeira meta;");
+        System.out.println("1- Registre uma meta;");
         System.out.println("2- Exibir metas graficamente;");
         System.out.println("3- Depositar em uma meta;");
         System.out.println("4- Debitar em uma meta;");
@@ -93,8 +125,8 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
         System.out.println("7- Modificar valor da meta");
         System.out.println("8- Sair;");
 
-        
         int resposta = entrada.nextInt();
+        entrada.nextLine();
 
         switch (resposta) {
             case 1:
@@ -124,10 +156,19 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
 
             default:
                 System.out.println("Resposta inválida. Tente novamente.");
-                menu();
                 break;
         }
+        menu();
 
+    }
+
+    public boolean validaSaldo(float deposito) {
+        float saldo = saldoDao.selectSaldo(email);
+        if (deposito > saldo) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public boolean validaMontante(float valor, String nome) {
@@ -209,6 +250,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
         } else {
             System.out.println("Informe o novo valor da meta: ");
             Float valorDesejado = entrada.nextFloat();
+            entrada.nextLine();
             dao.UpdateValorMeta(email, nome, valorDesejado);
         }
     }
