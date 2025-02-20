@@ -168,7 +168,7 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
     }
 
     public void sair() {
-        // voltar para main
+        // voltar para main.
     }
 
 }
