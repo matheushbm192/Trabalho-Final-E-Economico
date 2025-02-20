@@ -41,12 +41,11 @@ public class DespesasFixas extends OperacaoConta{
 
     @Override
     public void exibirInformacoes() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'exibirInformacoes'");
     }
 
     public void registrarDesepesaFixa(){
-        ComplementoDao dao = new ComplementoDao();
+        
+        DespesasFixasDao dao = new DespesasFixasDao();
         Scanner entrada = new Scanner(System.in);
         boolean respDespesas = true;
 
@@ -59,7 +58,7 @@ public class DespesasFixas extends OperacaoConta{
             valorDespesa = entrada.nextFloat();
             entrada.nextLine();
 
-            dao.insertDespesaFixa();
+            //dao.insertDespesaFixa();
 
 
             System.out.print("Deseja adicionar outra despesa? (s/n): ");

@@ -12,7 +12,7 @@ public class DespesasFixasDao {
         con = Database.getInstance().getConnection();
     }
 
-    public ArrayList<DespesasFixas> selectDespesaFixasMes(String email, LocalDate data = LocalDate. ) {
+    public ArrayList<DespesasFixas> selectDespesaFixasMes(String email, LocalDate data = LocalDate.) {
 
 
         try {
@@ -22,7 +22,7 @@ public class DespesasFixasDao {
             ReservaEmergencia reserva = new ReservaEmergencia();
             reserva.setNome(resultado.getString("nome"));
             reserva.setValor(resultado.getFloat("valor"));
-            reserva.setMontante(resultado.getDate("montante").);
+            //reserva.setMontante(resultado.getDate("montante").);
             stat.close();
 
             return reserva;

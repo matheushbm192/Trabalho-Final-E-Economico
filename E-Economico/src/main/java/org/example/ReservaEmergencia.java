@@ -18,6 +18,9 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
         this.valor = valor;
     }
 
+    ReservaEmergenciaDao dao = new ReservaEmergenciaDao();
+    SaldoAtualDao saldoDao = new SaldoAtualDao();
+
     @Override
     public void debitar() {
         Scanner entrada = new Scanner(System.in);
@@ -28,30 +31,35 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
             System.out.println("Informe o valor que deseja debitar: ");
             float valor = entrada.nextFloat();
             boolean validaValor = validaMontante(valor);
-            if(validaValor == false){
-            System.out.println("Não há saldo suficiente na reserva para esta retirada.");
-            }else{
+            if (validaValor == false) {
+                System.out.println("Não há saldo suficiente na reserva para esta retirada.");
+            } else {
                 dao.updateDebitarReservaEmergencia(email, valor);
-            // adicionar ao saldo atual
+                saldoDao.updateDepositoSaldo(email, valor);
+                // adicionar ao fluxo de caixa
             }
-            
+
         }
     }
 
     @Override
     public void depositar() {
-        
+
         Scanner entrada = new Scanner(System.in);
-        boolean validacao = verificaReserva();
-        if (validacao == false) {
+        boolean validaReserva = verificaReserva();
+        if (validaReserva == false) {
             System.out.println("Você não possui reserva cadastrada para depositar.");
         } else {
             System.out.println("Informe o valor que deseja depositar: ");
-            //analisar se ele tem saldo sufuciente para o deposito
             float valor = entrada.nextFloat();
-            dao.updateDepositarReservaEmergencia(email, valor);
-
-            // retirar do saldo atual
+            boolean validaSaldo = validaSaldo(valor);
+            if (validaSaldo == false) {
+                System.out.println("Você não possui saldo sufuciente para completar esse deposito");
+            } else {
+                dao.updateDepositarReservaEmergencia(email, valor);
+                saldoDao.updateDebitoSaldo(email, valor);
+            }
+            // adicionar ao fluxo de caixa
         }
     }
 
@@ -66,9 +74,6 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
             System.out.println("O valor da reserva de emergência é: R$" + reserva.getValor());
         }
     }
-
-
-    ReservaEmergenciaDao dao = new ReservaEmergenciaDao();
 
     public void menu() {
 
@@ -101,10 +106,9 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
 
             default:
                 System.out.println("Resposta inválida. Tente novamente.");
-                menu();
                 break;
         }
-
+        menu();
     }
 
     public boolean verificaReserva() {
@@ -127,21 +131,35 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
 
             System.out.print("Digite o valor da reserva: ");
             valor = entrada.nextFloat();
-            // verifica se ele tem saldo sufuciente para isso
-            // debitar o saldo atual
-            dao.insertReservaEmergencia(email, valor);
+            boolean validaSaldo = validaSaldo(valor);
+            if (validaSaldo == false) {
+                System.out.println("Você não possui saldo sufuciente para completar esta reserva");
+            } else {
+                dao.insertReservaEmergencia(email, valor);
+                saldoDao.updateDebitoSaldo(email, valor);
+                // acrescentar no fluxo de caixa
 
+            }
         }
 
     }
 
-    public boolean validaMontante(float valor){
-        ReservaEmergencia resreva = dao.selectReservaEmergencia(email);
-        if(valor>resreva.getValor()){
-            return false; 
-        }else{
-            return true; 
-                }
+    public boolean validaSaldo(float deposito) {
+        float saldo = saldoDao.selectSaldo(email);
+        if (deposito > saldo) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean validaMontante(float valor) {
+        ReservaEmergencia reserva = dao.selectReservaEmergencia(email);
+        if (valor > reserva.getValor()) {
+            return false;
+        } else {
+            return true;
+        }
 
     }
 

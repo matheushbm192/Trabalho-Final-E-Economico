@@ -44,6 +44,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
     }
 
     MetaDao dao = new MetaDao();
+    SaldoAtualDao saldoDao = new SaldoAtualDao();
 
     @Override
     public void exibirInformacoes() {
@@ -79,7 +80,8 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
                 System.out.println("Não há saldo suficiente na meta para esta retirada.");
             } else {
                 dao.UpdateDebitarMontanteMeta(email, nome, valorDebito);
-                // todo: acrescentar ao saldo atual
+                saldoDao.updateDepositoSaldo(nome, valorDebito);
+                // todo: acrescentar ao fluxo de caixa 
             }
         }
     }
@@ -94,12 +96,18 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
             System.out.println("Essa meta não existe.");
         } else {
             System.out.println("Informe o valor que deseja depositar: ");
-            // analisar se ele tem saldo sufuciente para o deposito
-            float valorDeposito = entrada.nextFloat();
-            dao.UpdateDepositarValorMeta(email, nome, valorDeposito);
-            // retirar do saldo atual
+            float valor = entrada.nextFloat();
+            boolean validaSaldo = validaSaldo(valor);
+            if (validaSaldo == false) {
+                System.out.println("Você não possui saldo sufuciente para completar esse deposito");
+            } else {
+                dao.UpdateDepositarValorMeta(email, nome, valor);
+                saldoDao.updateDebitoSaldo(email, valor);
+            }
+            // adicionar ao fluxo de caixa
         }
     }
+
 
 
 
@@ -149,6 +157,15 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
                 break;
         }
 
+    }
+
+    public boolean validaSaldo(float deposito) {
+        float saldo = saldoDao.selectSaldo(email);
+        if (deposito > saldo) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public boolean validaMontante(float valor, String nome) {
