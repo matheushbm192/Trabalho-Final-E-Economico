@@ -40,15 +40,17 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
 
     @Override
     public void debositar() {
-        ;
+        
         Scanner entrada = new Scanner(System.in);
         boolean validacao = verificaReserva();
         if (validacao == false) {
             System.out.println("Você não possui reserva cadastrada para depositar.");
         } else {
             System.out.println("Informe o valor que deseja depositar: ");
+            //analisar se ele tem saldo sufuciente para o deposito
             float valor = entrada.nextFloat();
             dao.updateDepositarReservaEmergencia(email, valor);
+
             // retirar do saldo atual
         }
     }
@@ -65,9 +67,6 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
         }
     }
 
-    @Override
-    public void modificarInformacoes() {
-    }
 
     ReservaEmergenciaDao dao = new ReservaEmergenciaDao();
 

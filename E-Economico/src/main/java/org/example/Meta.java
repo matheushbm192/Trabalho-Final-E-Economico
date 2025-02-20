@@ -34,19 +34,48 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
 
     @Override
     public void exibirInformacoes() {
+        //exibir gráficos 
     }
 
-    @Override
-    public void modificarInformacoes() {
-    }
+    Scanner entrada = new Scanner(System.in);
 
     @Override
     public void debitar() {
+        System.out.println("Informe o nome da meta que você deseja debitar: ");
+        String nome = entrada.nextLine();
+        boolean existe = verificaMeta(nome);
+        if (existe == false) {
+            System.out.println("Essa meta não existe.");
+        } else {
+            System.out.println("Informe o valor que você deseja debitar: ");
+            float valorDebito = entrada.nextFloat();
+            boolean validaValor = validaMontante(valorDebito, nome);
+            if (validaValor == false) {
+                System.out.println("Não há saldo suficiente na meta para esta retirada.");
+            } else {
+                dao.UpdateDebitarMontanteMeta(email, nome, valorDebito);
+                //todo: acrescentar ao saldo atual 
+            }
+        }
     }
 
     @Override
     public void debositar() {
+        System.out.println("Informe o nome da meta que você deseja depositar: ");
+        String nome = entrada.nextLine();
+        boolean existe = verificaMeta(nome);
+        if (existe == false) {
+            System.out.println("Essa meta não existe.");
+        } else {
+            System.out.println("Informe o valor que deseja depositar: ");
+            //analisar se ele tem saldo sufuciente para o deposito
+            float valorDeposito = entrada.nextFloat();
+            dao.UpdateDepositarValorMeta(email, nome, valorDeposito);
+            // retirar do saldo atual
+        }
     }
+
+    MetaDao dao = new MetaDao();
 
     public void menu() {
 
@@ -60,7 +89,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
         System.out.println("7- Modificar valor da meta");
         System.out.println("8- Sair;");
 
-        Scanner entrada = new Scanner(System.in);
+        
         int resposta = entrada.nextInt();
 
         switch (resposta) {
@@ -77,13 +106,16 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
                 debitar();
                 break;
             case 5:
+                deletar();
                 break;
             case 6:
+                modificarNome();
                 break;
             case 7:
+                modificarValor();
                 break;
             case 8:
-                //sair();
+                // sair();
                 break;
 
             default:
@@ -94,12 +126,30 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
 
     }
 
+    public boolean validaMontante(float valor, String nome) {
+        Meta meta = dao.selectMeta(email, nome);
+        if (valor > meta.getValorMeta()) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    public boolean verificaMeta(String nome) {
+        Meta meta = dao.selectMeta(email, nome);
+        if (meta == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public void registrarMeta() {
         MetaDao dao = new MetaDao();
-        Scanner entrada = new Scanner(System.in);
         boolean respMetas = true;
 
-        System.out.println("Informe suas metas financeiras: ");
+        System.out.println("Informe sua meta financeira: ");
         while (respMetas) {
             System.out.print("Digite o nome da meta: ");
             nomeMeta = entrada.nextLine();
@@ -113,6 +163,44 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
             System.out.print("Deseja adicionar outra meta? (s/n): ");
             String resposta = entrada.nextLine();
             respMetas = resposta.equalsIgnoreCase("s");
+        }
+    }
+
+    public void deletar() {
+        System.out.println("Informe o nome da meta que você deseja depositar: ");
+        String nome = entrada.nextLine();
+        boolean existe = verificaMeta(nome);
+        if (existe == false) {
+            System.out.println("Essa meta não existe. Portanto, não pode ser apagada.");
+        } else {
+            dao.deleteMeta(email, nome);
+        }
+
+    }
+
+    public void modificarNome() {
+        System.out.println("Informe o nome atual da meta: ");
+        String nomeOriginal = entrada.nextLine();
+        boolean existe = verificaMeta(nomeOriginal);
+        if (existe == false) {
+            System.out.println("Essa meta não existe. Portanto, não pode ser modificada.");
+        } else {
+            System.out.println("Informe o novo nome da meta: ");
+            String nomeDesejado = entrada.nextLine();
+            dao.UpdateNomeMeta(email, nomeOriginal, nomeDesejado);
+        }
+    }
+
+    public void modificarValor() {
+        System.out.println("Informe o nome da meta: ");
+        String nome = entrada.nextLine();
+        boolean existe = verificaMeta(nome);
+        if (existe == false) {
+            System.out.println("Essa meta não existe. Portanto, não pode ser modificada.");
+        } else {
+            System.out.println("Informe o novo valor da meta: ");
+            Float valorDesejado = entrada.nextFloat();
+            dao.UpdateValorMeta(email, nome, valorDesejado);
         }
     }
 

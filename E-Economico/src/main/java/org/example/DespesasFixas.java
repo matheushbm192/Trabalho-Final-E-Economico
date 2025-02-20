@@ -26,10 +26,6 @@ public class DespesasFixas extends OperacaoConta{
         throw new UnsupportedOperationException("Unimplemented method 'exibirInformacoes'");
     }
 
-    @Override
-    public void modificarInformacoes() {
-    }
-
     public void registrarDesepesaFixa(){
         ComplementoDao dao = new ComplementoDao();
         Scanner entrada = new Scanner(System.in);

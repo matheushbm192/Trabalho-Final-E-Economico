@@ -6,9 +6,5 @@ public class FluxoCaixa extends OperacaoConta{
     public void exibirInformacoes() {
     }
 
-    //ele não pode modificar fluxo de caixa!!
-    @Override
-    public void modificarInformacoes() {
-    }
 
 }
