@@ -15,8 +15,6 @@ public class DespesasFixasDao {
 
     public ArrayList<DespesasFixas> selectDespesaFixas(String email) {
 
-
-
         try {
             ArrayList<DespesasFixas> despesasFixas = new ArrayList<>();
             Statement stat = con.createStatement();
@@ -26,15 +24,15 @@ public class DespesasFixasDao {
                 DespesasFixas despesa = new DespesasFixas(email);
                 despesa.setNomeDespesa(resultado.getString("nome"));
                 despesa.setValorDespesa(resultado.getFloat("valor"));
-                despesa.setData(resultado.getDate("data"));
+                despesa.setData(resultado.getDate("data").toLocalDate());
                 despesasFixas.add(despesa);
             }
-
             stat.close();
-            return despesasFixas ;
+
+            return despesasFixas;
 
         } catch (SQLException e){
-            System.err.println("Erro ao buscar Reserva de Emergencia" + e);
+            System.err.println("Erro ao buscar Despesas fixas" + e);
         }
         return null;
     }
@@ -51,7 +49,7 @@ public class DespesasFixasDao {
                     + email + "', '" + nome + "', " + valor + ", '" + sqlDate + "')");
             stat.close();
         }catch (SQLException e){
-            System.err.println("Erro ao inserir Reserva de Emergencia");
+            System.err.println("Erro ao inserir Desespesa fixa");
         }
     }
     public void deleteDespesaFixa(String email, String nome) {

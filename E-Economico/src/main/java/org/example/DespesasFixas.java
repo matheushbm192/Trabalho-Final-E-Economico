@@ -1,5 +1,6 @@
 package org.example;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import java.sql.Date;
@@ -9,7 +10,7 @@ public class DespesasFixas extends OperacaoConta{
     private String nomeDespesa;
     private float valorDespesa;
     private String email;
-    private Date data;
+    private LocalDate data;
 
     public DespesasFixas(String email) {
        this.email = email;
@@ -23,11 +24,11 @@ public class DespesasFixas extends OperacaoConta{
         this.valorDespesa = valorDespesa;
     }
 
-    public Date getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
