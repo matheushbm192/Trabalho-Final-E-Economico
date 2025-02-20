@@ -66,6 +66,7 @@ public class Usuario {
         reserva.menu();
     }
     public void exibirFluxoCaixa() {
+        FluxoCaixa fluxo = new FluxoCaixa(email);
         //todo:fazer
     }
     public void inserirDebitoDeposito() {
