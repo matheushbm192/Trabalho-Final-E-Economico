@@ -18,7 +18,7 @@ public class DespesasFixasDao {
         try {
 
             Statement stat = con.createStatement();
-            ResultSet resultado = stat.executeQuery("select * from fluxoCaixaDeposito where email = '" + email + "'");
+            ResultSet resultado = stat.executeQuery("select * from despesasFixas where email = '" + email + "' and '" + nome +"'");
 
 
             DespesasFixas despesa = new DespesasFixas(email);
