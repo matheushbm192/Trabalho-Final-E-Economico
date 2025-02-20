@@ -30,6 +30,7 @@ public class ReservaEmergenciaDao {
         return null;
     }
 
+
     public void insertReservaEmergencia(String email, float valor) {
         try {
             Statement stat = con.createStatement();

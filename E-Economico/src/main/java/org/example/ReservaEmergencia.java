@@ -39,7 +39,7 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
     }
 
     @Override
-    public void debositar() {
+    public void depositar() {
         
         Scanner entrada = new Scanner(System.in);
         boolean validacao = verificaReserva();
@@ -90,7 +90,7 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
                 exibirInformacoes();
                 break;
             case 3:
-                debositar();
+                depositar();
                 break;
             case 4:
                 debitar();

@@ -24,6 +24,8 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
         this.montante = montante;
     }
 
+
+     
     public String getNomeMeta() {
         return nomeMeta;
     }
@@ -41,6 +43,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
 
     @Override
     public void debitar() {
+        MetaDao dao = new MetaDao();
         System.out.println("Informe o nome da meta que você deseja debitar: ");
         String nome = entrada.nextLine();
         boolean existe = verificaMeta(nome);
@@ -60,7 +63,8 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
     }
 
     @Override
-    public void debositar() {
+    public void depositar() {
+        MetaDao dao = new MetaDao();
         System.out.println("Informe o nome da meta que você deseja depositar: ");
         String nome = entrada.nextLine();
         boolean existe = verificaMeta(nome);
@@ -75,7 +79,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
         }
     }
 
-    MetaDao dao = new MetaDao();
+
 
     public void menu() {
 
@@ -100,7 +104,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
                 exibirInformacoes();
                 break;
             case 3:
-                debositar();
+                depositar();
                 break;
             case 4:
                 debitar();
@@ -127,6 +131,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
     }
 
     public boolean validaMontante(float valor, String nome) {
+        MetaDao dao = new MetaDao();
         Meta meta = dao.selectMeta(email, nome);
         if (valor > meta.getValorMeta()) {
             return false;
@@ -137,6 +142,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
     }
 
     public boolean verificaMeta(String nome) {
+        MetaDao dao = new MetaDao();
         Meta meta = dao.selectMeta(email, nome);
         if (meta == null) {
             return false;
@@ -167,6 +173,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
     }
 
     public void deletar() {
+        MetaDao dao = new MetaDao();
         System.out.println("Informe o nome da meta que você deseja depositar: ");
         String nome = entrada.nextLine();
         boolean existe = verificaMeta(nome);
@@ -179,6 +186,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
     }
 
     public void modificarNome() {
+        MetaDao dao = new MetaDao();
         System.out.println("Informe o nome atual da meta: ");
         String nomeOriginal = entrada.nextLine();
         boolean existe = verificaMeta(nomeOriginal);
@@ -192,6 +200,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
     }
 
     public void modificarValor() {
+        MetaDao dao = new MetaDao();
         System.out.println("Informe o nome da meta: ");
         String nome = entrada.nextLine();
         boolean existe = verificaMeta(nome);
