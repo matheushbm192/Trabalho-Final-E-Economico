@@ -4,6 +4,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DespesasFixasDao {
     private Connection con;
@@ -12,56 +13,58 @@ public class DespesasFixasDao {
         con = Database.getInstance().getConnection();
     }
 
-    public ArrayList<DespesasFixas> selectDespesaFixasMes(String email, LocalDate data = LocalDate. ) {
+    public ArrayList<DespesasFixas> selectDespesaFixas(String email) {
+
 
 
         try {
+            ArrayList<DespesasFixas> despesasFixas = new ArrayList<>();
             Statement stat = con.createStatement();
-            ResultSet resultado = stat.executeQuery("select * from reservaEmergencia where email = '" + email + "'");
+            ResultSet resultado = stat.executeQuery("select * from despesasFixas where email = '" + email + "'");
+            //create table if not exists despesasFixas (email string, nome string, valor float, data date);
+            while(resultado.next()){
+                DespesasFixas despesa = new DespesasFixas(email);
+                despesa.setNomeDespesa(resultado.getString("nome"));
+                despesa.setValorDespesa(resultado.getFloat("valor"));
+                despesa.setData(resultado.getDate("data"));
+                despesasFixas.add(despesa);
+            }
 
-            ReservaEmergencia reserva = new ReservaEmergencia();
-            reserva.setNome(resultado.getString("nome"));
-            reserva.setValor(resultado.getFloat("valor"));
-            reserva.setMontante(resultado.getDate("montante").);
             stat.close();
-
-            return reserva;
+            return despesasFixas ;
 
         } catch (SQLException e){
             System.err.println("Erro ao buscar Reserva de Emergencia" + e);
         }
         return null;
     }
-    public void insertReservaEmergencia(String email, float valor) {
+
+    public void insertDespesaFixa(String email, String nome, float valor, LocalDate data) {
         try{
+
             Statement stat = con.createStatement();
-            stat.executeUpdate("insert into reservaEmergencia(email,valor) values('"+ email + "'," + valor + ")");
+            // Converte LocalDate para java.sql.Date
+            java.sql.Date sqlDate = java.sql.Date.valueOf(data);
+
+            // Monta a query concatenando os valores
+            stat.executeUpdate( "INSERT INTO despesasFixas(email, nome, valor, data) VALUES ('"
+                    + email + "', '" + nome + "', " + valor + ", '" + sqlDate + "')");
             stat.close();
         }catch (SQLException e){
             System.err.println("Erro ao inserir Reserva de Emergencia");
+        }
+    }
+    public void deleteDespesaFixa(String email, String nome) {
+        try {
+            Statement stat = con.createStatement();
+            stat.executeUpdate("delete from despesasFixas where email = '" + email + "' AND '" + nome + "'");
+            stat.close();
+
+        } catch (SQLException e) {
+            System.err.println("Error ao deletar Despesa Fixa");
         }
     }
 
-    public void updateDepositarReservaEmergencia(String email, float valor) {
-        try{
-            Statement stat = con.createStatement();
-            stat.executeUpdate("update reservaEmergencia set valor = valor + " + valor + " where email = '" + email +"'");
-            stat.close();
-            //todo: criar tratamentos para não deixar o usuario usar sem ter cadastrado um reserva de emergencia
-        }catch (SQLException e){
-            System.err.println("Erro ao inserir Reserva de Emergencia");
-        }
-    }
 
-    public void updateDebitarReservaEmergencia(String email, float valor) {
-        try{
-            Statement stat = con.createStatement();
-            stat.executeUpdate("update reservaEmergencia set valor = valor - " + valor + " where email = '" + email +"'");
-            stat.close();
-            //todo: criar tratamentos para não deixar o usuario usar sem ter cadastrado um reserva de emergencia
-            //todo: não deixar usuario retirar mais dinheiro do que a reserva possui
-        }catch (SQLException e){
-            System.err.println("Erro ao inserir Reserva de Emergencia");
-        }
-    }
+
 }
