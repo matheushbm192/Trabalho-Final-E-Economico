@@ -33,10 +33,7 @@ public class ReservaEmergenciaDao {
     public void insertReservaEmergencia(String email, String nome, float valor, float montante) {
         try{
             Statement stat = con.createStatement();
-            stat.executeUpdate("insert into reservaEmergencia(email,nome,valor,montante) values("+ email + ",'"
-                    + nome + "',"
-                    + valor +","
-                    + montante +");");
+            stat.executeUpdate("insert into reservaEmergencia(email,valor) values('"+ email + "'," + valor + ")");
             stat.close();
         }catch (SQLException e){
             System.err.println("Erro ao inserir Reserva de Emergencia");

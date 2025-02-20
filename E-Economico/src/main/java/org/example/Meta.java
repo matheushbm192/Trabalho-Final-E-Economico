@@ -3,13 +3,25 @@ package org.example;
 import java.util.Scanner;
 
 public class Meta extends OperacaoConta implements OperacaoFinanceira{
+    private String email;
     private String nomeMeta;
-    private Float valorMeta;
-    private double capitalAcumulado;
-    private String email; 
+    private float valorMeta;
+    private float montante;
     
     public Meta(String email) {
-        this.email = email; 
+       this.email = email;
+    }
+
+    public void setNomeMeta(String nomeMeta) {
+        this.nomeMeta = nomeMeta;
+    }
+
+    public void setValorMeta(Float valorMeta) {
+        this.valorMeta = valorMeta;
+    }
+
+    public void setMontante(float montante) {
+        this.montante = montante;
     }
 
     public double getCapitalAcumulado() {
