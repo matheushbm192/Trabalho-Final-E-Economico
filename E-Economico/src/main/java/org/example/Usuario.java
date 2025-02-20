@@ -9,8 +9,8 @@ public class Usuario {
     private String senha;
     private String regimeTrab;
     private float salario;
-    public ComplementoDados complemento;
-    
+
+
 
     public float getSalario(){return salario;}
     public String getNome() {
@@ -41,7 +41,7 @@ public class Usuario {
         this.senha = senha;
         this.regimeTrab = regimeTrab;
         this.salario = salario;
-        this.complemento = new ComplementoDados(email);
+
 
     }
      //ta usando isso??

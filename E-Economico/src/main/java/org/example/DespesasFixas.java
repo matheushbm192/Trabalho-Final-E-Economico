@@ -2,14 +2,33 @@ package org.example;
 
 import java.util.Scanner;
 
+import java.sql.Date;
+
 public class DespesasFixas extends OperacaoConta{
 
     private String nomeDespesa;
     private float valorDespesa;
     private String email;
+    private Date data;
 
     public DespesasFixas(String email) {
-       this.email = email; 
+       this.email = email;
+    }
+
+    public void setNomeDespesa(String nomeDespesa) {
+        this.nomeDespesa = nomeDespesa;
+    }
+
+    public void setValorDespesa(float valorDespesa) {
+        this.valorDespesa = valorDespesa;
+    }
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
     }
 
     public String getNomeDespesa() {
