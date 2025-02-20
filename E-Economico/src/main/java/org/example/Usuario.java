@@ -50,5 +50,29 @@ public class Usuario {
         return "email: " + email + "\tName: " + nome;
     }
 
+    public void modificarSalario() {
+        //todo: fazer
+    }
+    public void modificarDespesasFixas() {
+        DespesasFixas despesas = new DespesasFixas(email);
+        despesas.menu();
+    }
+    public void modificarMetas() {
+        Meta meta = new Meta(email);
+        meta.menu();
+    }
+    public void modificarReservaEmergencia() {
+        ReservaEmergencia reserva = new ReservaEmergencia(email);
+        reserva.menu();
+    }
+    public void exibirFluxoCaixa() {
+        //todo:fazer
+    }
+    public void inserirDebitoDeposito() {
+        //todo: fazer
+    }
+
+
+
 
 }

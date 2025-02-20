@@ -13,6 +13,15 @@ public class DespesasFixasDao {
         con = Database.getInstance().getConnection();
     }
 
+    //fazer esse
+    public DespesasFixas selectDespesaFixa(String email, String nome){
+        return despesa; 
+    }
+    //fazer esse
+    public void UpdateValorDespesa(String email, String nome, float valorDesejado){
+
+    }
+
     public ArrayList<DespesasFixas> selectDespesaFixas(String email) {
 
         try {
@@ -59,7 +68,7 @@ public class DespesasFixasDao {
             stat.close();
 
         } catch (SQLException e) {
-            System.err.println("Error ao deletar Despesa Fixa");
+            System.err.println("Erro ao deletar Despesa Fixa");
         }
     }
 

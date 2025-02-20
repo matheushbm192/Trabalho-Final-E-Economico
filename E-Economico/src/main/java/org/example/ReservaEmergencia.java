@@ -30,6 +30,7 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
         } else {
             System.out.println("Informe o valor que deseja debitar: ");
             float valor = entrada.nextFloat();
+            entrada.nextLine();
             boolean validaValor = validaMontante(valor);
             if (validaValor == false) {
                 System.out.println("Não há saldo suficiente na reserva para esta retirada.");
@@ -52,6 +53,7 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
         } else {
             System.out.println("Informe o valor que deseja depositar: ");
             float valor = entrada.nextFloat();
+            entrada.nextLine();
             boolean validaSaldo = validaSaldo(valor);
             if (validaSaldo == false) {
                 System.out.println("Você não possui saldo sufuciente para completar esse deposito");
@@ -86,6 +88,7 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
 
         Scanner entrada = new Scanner(System.in);
         int resposta = entrada.nextInt();
+        entrada.nextLine();
 
         switch (resposta) {
             case 1:
@@ -131,6 +134,7 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
 
             System.out.print("Digite o valor da reserva: ");
             valor = entrada.nextFloat();
+            entrada.nextLine();
             boolean validaSaldo = validaSaldo(valor);
             if (validaSaldo == false) {
                 System.out.println("Você não possui saldo sufuciente para completar esta reserva");

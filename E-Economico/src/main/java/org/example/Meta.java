@@ -75,6 +75,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
         } else {
             System.out.println("Informe o valor que você deseja debitar: ");
             float valorDebito = entrada.nextFloat();
+            entrada.nextLine();
             boolean validaValor = validaMontante(valorDebito, nome);
             if (validaValor == false) {
                 System.out.println("Não há saldo suficiente na meta para esta retirada.");
@@ -97,6 +98,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
         } else {
             System.out.println("Informe o valor que deseja depositar: ");
             float valor = entrada.nextFloat();
+            entrada.nextLine();
             boolean validaSaldo = validaSaldo(valor);
             if (validaSaldo == false) {
                 System.out.println("Você não possui saldo sufuciente para completar esse deposito");
@@ -114,7 +116,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
     public void menu() {
 
         System.out.println("Menu metas:");
-        System.out.println("1- Crie sua primeira meta;");
+        System.out.println("1- Registre uma meta;");
         System.out.println("2- Exibir metas graficamente;");
         System.out.println("3- Depositar em uma meta;");
         System.out.println("4- Debitar em uma meta;");
@@ -124,6 +126,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
         System.out.println("8- Sair;");
 
         int resposta = entrada.nextInt();
+        entrada.nextLine();
 
         switch (resposta) {
             case 1:
@@ -153,9 +156,9 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
 
             default:
                 System.out.println("Resposta inválida. Tente novamente.");
-                menu();
                 break;
         }
+        menu();
 
     }
 
@@ -247,6 +250,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
         } else {
             System.out.println("Informe o novo valor da meta: ");
             Float valorDesejado = entrada.nextFloat();
+            entrada.nextLine();
             dao.UpdateValorMeta(email, nome, valorDesejado);
         }
     }
