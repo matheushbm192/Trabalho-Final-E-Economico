@@ -52,7 +52,6 @@ public class DespesasFixasDao {
             ArrayList<DespesasFixas> despesasFixas = new ArrayList<>();
             Statement stat = con.createStatement();
             ResultSet resultado = stat.executeQuery("select * from despesasFixas where email = '" + email + "'");
-            //create table if not exists despesasFixas (email string, nome string, valor float, data date);
             while(resultado.next()){
                 DespesasFixas despesa = new DespesasFixas(email);
                 despesa.setNomeDespesa(resultado.getString("nome"));
