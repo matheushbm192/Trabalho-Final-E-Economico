@@ -50,6 +50,7 @@ public class Usuario {
         this.regimeTrab = regimeTrab;
         this.salario = salario;
 
+
     }
 
     // ta usando isso??
@@ -78,9 +79,9 @@ public class Usuario {
     }
 
     public void exibirFluxoCaixa() {
-        // todo:fazer
+        FluxoCaixa fluxo = new FluxoCaixa(email);
+        //todo:fazer
     }
-
     public void inserirDebitoDeposito() {
         Scanner entrada = new Scanner(System.in);
         int escolha = 0;

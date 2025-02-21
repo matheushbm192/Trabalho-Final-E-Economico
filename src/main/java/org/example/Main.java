@@ -11,6 +11,17 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+        System.out.println("Já possui cadastro?\n1 - Sim\n2 - Não");
+        Scanner resposta = new Scanner(System.in);
+        int valor = resposta.nextInt();
+        switch (valor){
+            case 1:
+                break;
+            case 2:
+                Cadastro.cadastrar();
+                break;
+        }
+
         Usuario usuario = Login.login();
         System.out.println(usuario.getNome());
 
