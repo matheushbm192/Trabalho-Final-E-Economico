@@ -1,10 +1,7 @@
 package org.example;
 
 import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,36 +13,10 @@ public class UsuarioDao {
         con = Database.getInstance().getConnection();
     }
 
-    public void insert(Usuario usuario) throws SQLException {
 
+    public Usuario selectUsuario(String email) throws SQLException {
         Statement stat = con.createStatement();
-       // stat.executeUpdate("insert into person values("+ usuario.getEmail()+ ",'"+ + "')");
-        stat.close();
-    }
-
-    public void delete(int id) throws SQLException {
-        Statement stat = con.createStatement();
-        stat.executeUpdate("delete from person where person.id = " + id);
-        stat.close();
-    }
-
-    public List<Usuario> getAll() throws SQLException {
-        ArrayList<Usuario> usuarios = new ArrayList<>();
-        Statement stat = con.createStatement();
-        ResultSet rs = stat.executeQuery("select * from person");
-        while(rs.next())
-        {
-        //    Usuario usuario = new Usuario();
-        //    usuario.setEmail(rs.getString("email"));
-           // usuario.setName(rs.getString("name"));
-         //   usuarios.add(usuario);
-        }
-        return usuarios;
-    }
-
-    public Usuario getById(int id) throws SQLException {
-        Statement stat = con.createStatement();
-        ResultSet rs = stat.executeQuery("select from person where person.id = " + id);
+        ResultSet rs = stat.executeQuery("select from usuario where email = '" + email+"'");
 
         if(rs.next()){
            // Usuario usuario = new Usuario();
@@ -58,10 +29,20 @@ public class UsuarioDao {
         return null;
     }
 
-    public void update(Usuario usuario, int id) throws SQLException {
-        Statement stat = con.createStatement();
-     //   stat.executeUpdate("update person set name = '" + usuario.getName() +
-     //                   "',id = " + usuario.getEmail() +" where person.id = " + id);
-        stat.close();
+    public void update(String email, float valorDesejado) {
+        String sql = "UPDATE usuario SET salario = ? WHERE email = ?";
+
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            // Passa os parâmetros de forma segura
+            pstmt.setFloat(1, valorDesejado);  // Passa o valor desejado
+            pstmt.setString(2, email);         // Passa o email
+
+            // Executa a atualização
+            int rowsAffected = pstmt.executeUpdate();
+            System.out.println("Linhas atualizadas: " + rowsAffected);
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar valor do salario: " + e.getMessage());
+        }
     }
 }
