@@ -1,5 +1,6 @@
 package org.example;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import org.jfree.data.category.DefaultCategoryDataset;
 
@@ -7,8 +8,7 @@ public class FluxoCaixa extends OperacaoConta {
 
     DebitoDao debitoDao = new DebitoDao();
     DepositoDao depositoDao = new DepositoDao();
-    FluxoCaixaDao fluxoCaixaDao = new FluxoCaixaDao();
-    
+
     private String email;
 
     public FluxoCaixa(String email) {
@@ -19,25 +19,29 @@ public class FluxoCaixa extends OperacaoConta {
     public void exibirInformacoes() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-        ArrayList<Debito> debitos = debitoDao.selectDebitos(email);
-        ArrayList<Deposito> depositos = depositoDao.selectDepositos(email);
-        ArrayList<FluxoCaixa> fluxos = fluxoCaixaDao.selectFluxoCaixa(email);
-
-        double totalDebitos = calcularTotal(debitos);
-        double totalDepositos = calcularTotal(depositos);
-        double totalFluxo = calcularTotal(fluxos);
+        double totalDebitos = calcularTotalDebitos();
+        double totalDepositos = calcularTotalDepositos();
 
         dataset.addValue(totalDebitos, "Débito", "Resumo Financeiro");
         dataset.addValue(totalDepositos, "Depósito", "Resumo Financeiro");
-        dataset.addValue(totalFluxo, "Fluxo de Caixa", "Resumo Financeiro");
 
         new BarChart("Resumo Financeiro", "Categoria", "Valor", dataset);
     }
 
-    private double calcularTotal(ArrayList<E> lista) {
+    private double calcularTotalDebitos() {
+        ArrayList<Debito> debitos = debitoDao.selectDebitos(email, LocalDate.now());
         double total = 0;
-        for (OperacaoFinanceira op : lista) {
-            total += op.getValor();
+        for (Debito debito : debitos) {
+            total += debito.getValor();
+        }
+        return total;
+    }
+
+    private double calcularTotalDepositos() {
+        ArrayList<Deposito> depositos = depositoDao.selectDepositos(email, LocalDate.now());
+        double total = 0;
+        for (Deposito deposito : depositos) {
+            total += deposito.getValor();
         }
         return total;
     }
