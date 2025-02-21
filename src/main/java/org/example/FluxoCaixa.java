@@ -1,6 +1,7 @@
 package org.example;
 
 import java.time.LocalDate;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import org.jfree.data.category.DefaultCategoryDataset;
 
@@ -19,6 +20,11 @@ public class FluxoCaixa extends OperacaoConta {
     public void exibirInformacoes() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
+        ArrayList<Debito> debitos = debitoDao.selectDebitos(email);
+        ArrayList<Deposito> depositos = depositoDao.selectDepositos(email);
+
+
+        float totalFluxo = gerarFluxo(email);
         double totalDebitos = calcularTotalDebitos();
         double totalDepositos = calcularTotalDepositos();
 
@@ -44,5 +50,19 @@ public class FluxoCaixa extends OperacaoConta {
             total += deposito.getValor();
         }
         return total;
+    }
+
+    public float gerarFluxo(String email){
+        ArrayList<Debito> debitos = new DebitoDao().selectDebitos(email, LocalDate.now());
+        ArrayList<Deposito> depositos = new DepositoDao().selectDepositos(email,LocalDate.now());
+        float resultadoDebito = 0;
+        float resultadoDeposito = 0;
+        for(Debito debito : debitos ){
+            resultadoDebito += debito.getValor();
+        }
+        for(Deposito deposito : depositos ){
+            resultadoDeposito += deposito.getValor();
+        }
+        return resultadoDeposito - resultadoDebito;
     }
 }
