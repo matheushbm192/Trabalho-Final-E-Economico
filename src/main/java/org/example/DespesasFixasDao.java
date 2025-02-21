@@ -2,6 +2,9 @@ package org.example;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 public class DespesasFixasDao {
@@ -47,15 +50,28 @@ public class DespesasFixasDao {
     public ArrayList<DespesasFixas> selectDespesasFixas(String email, LocalDate data) {
         int mes = data.getMonthValue();
         int ano = data.getYear();
+
+        // Converte o primeiro e o último dia do mês para timestamp
+        LocalDate primeiroDiaMes = data.withDayOfMonth(1);
+        LocalDateTime primeiroDiaMesInicio = primeiroDiaMes.atStartOfDay();
+        long primeiroTimestamp = primeiroDiaMesInicio.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
+        // Último dia do mês (23:59:59)
+        LocalDate ultimoDiaMes = primeiroDiaMes.withDayOfMonth(primeiroDiaMes.lengthOfMonth());
+        LocalDateTime ultimoDiaMesFim = ultimoDiaMes.atTime(LocalTime.MAX);
+        long ultimoTimestamp = ultimoDiaMesFim.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
         ArrayList<DespesasFixas> despesasFixas = new ArrayList<>();
 
+        // Query para buscar despesas fixas dentro do intervalo de timestamp
         String sql = "SELECT * FROM despesasFixas WHERE email = ? " +
-                     "AND CAST(strftime('%m', data) AS INTEGER) = ? " +
-                     "AND CAST(strftime('%Y', data) AS INTEGER) = ?";
+                "AND data >= ? AND data <= ?";
+
         try (PreparedStatement stat = con.prepareStatement(sql)) {
             stat.setString(1, email);
-            stat.setInt(2, mes);
-            stat.setInt(3, ano);
+            stat.setLong(2, primeiroTimestamp);  // Timestamp do primeiro dia do mês
+            stat.setLong(3, ultimoTimestamp);    // Timestamp do último dia do mês
+
             ResultSet resultado = stat.executeQuery();
 
             while (resultado.next()) {
@@ -70,6 +86,7 @@ public class DespesasFixasDao {
         }
         return despesasFixas;
     }
+
 
     public void insertDespesaFixa(String email, String nome, float valor, LocalDate data) {
         String sql = "INSERT INTO despesasFixas(email, nome, valor, data) VALUES (?, ?, ?, ?)";
