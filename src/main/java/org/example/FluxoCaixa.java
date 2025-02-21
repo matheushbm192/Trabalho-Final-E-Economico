@@ -7,9 +7,6 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 public class FluxoCaixa extends OperacaoConta {
 
-    DebitoDao debitoDao = new DebitoDao();
-    DepositoDao depositoDao = new DepositoDao();
-
     private String email;
 
     public FluxoCaixa(String email) {
@@ -19,8 +16,9 @@ public class FluxoCaixa extends OperacaoConta {
     @Override
     public void exibirInformacoes() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
+        DebitoDao debitoDao = new DebitoDao();
         ArrayList<Debito> debitos = debitoDao.selectDebitos(email, LocalDate.now());
+        DepositoDao depositoDao = new DepositoDao();
         ArrayList<Deposito> depositos = depositoDao.selectDepositos(email, LocalDate.now());
 
 
@@ -36,35 +34,69 @@ public class FluxoCaixa extends OperacaoConta {
     }
 
     private double calcularTotalDebitos() {
-        ArrayList<Debito> debitos = debitoDao.selectDebitos(email, LocalDate.now());
         double total = 0;
-        for (Debito debito : debitos) {
-            total += debito.getValor();
+
+        try {
+            DebitoDao debitoDao = new DebitoDao();
+            ArrayList<Debito> debitos = debitoDao.selectDebitos(email, LocalDate.now());
+
+            if (debitos != null) {
+                for (Debito debito : debitos) {
+                    total += debito.getValor();
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao calcular total de débitos: " + e.getMessage());
         }
+
         return total;
     }
 
     private double calcularTotalDepositos() {
-        ArrayList<Deposito> depositos = depositoDao.selectDepositos(email, LocalDate.now());
         double total = 0;
-        for (Deposito deposito : depositos) {
-            total += deposito.getValor();
+
+        try {
+            DepositoDao depositoDao = new DepositoDao();
+            ArrayList<Deposito> depositos = depositoDao.selectDepositos(email, LocalDate.now());
+
+            if (depositos != null) {
+                for (Deposito deposito : depositos) {
+                    total += deposito.getValor();
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao calcular total de depósitos: " + e.getMessage());
         }
+
         return total;
     }
 
-    public float gerarFluxo(String email){
-        ArrayList<Debito> debitos = new DebitoDao().selectDebitos(email, LocalDate.now());
-        ArrayList<Deposito> depositos = new DepositoDao().selectDepositos(email,LocalDate.now());
+
+    public float gerarFluxo(String email) {
         float resultadoDebito = 0;
         float resultadoDeposito = 0;
 
-        for(Debito debito : debitos ){
-            resultadoDebito += debito.getValor();
+        try {
+            // Obtém os débitos e depósitos
+            ArrayList<Debito> debitos = new DebitoDao().selectDebitos(email, LocalDate.now());
+            ArrayList<Deposito> depositos = new DepositoDao().selectDepositos(email, LocalDate.now());
+
+            if (debitos != null) {
+                for (Debito debito : debitos) {
+                    resultadoDebito += debito.getValor();
+                }
+            }
+
+            if (depositos != null) {
+                for (Deposito deposito : depositos) {
+                    resultadoDeposito += deposito.getValor();
+                }
+            }
+
+        } catch (Exception e) {
+            return 0;
         }
-        for(Deposito deposito : depositos ){
-            resultadoDeposito += deposito.getValor();
-        }
+        // Retorna o saldo final (depósitos - débitos)
         return resultadoDeposito - resultadoDebito;
     }
 }

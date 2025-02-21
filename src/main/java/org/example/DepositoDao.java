@@ -1,9 +1,6 @@
 package org.example;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -16,31 +13,41 @@ public class DepositoDao {
     }
 
     public void insertDeposito(String email, float deposito, LocalDate data) {
-        try(Statement stat = con.createStatement()){
+        String sql = "INSERT INTO fluxoCaixaDeposito (email, deposito, data) VALUES (?, ?, ?)";
 
-            // Converte LocalDate para java.sql.Date
-            java.sql.Date sqlDate = java.sql.Date.valueOf(data);
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            // Define os valores nos placeholders
+            pstmt.setString(1, email);
+            pstmt.setFloat(2, deposito);
+            pstmt.setDate(3, java.sql.Date.valueOf(data));
 
-            // Monta a query concatenando os valores
-            stat.executeUpdate( "INSERT INTO fluxoCaixaDeposito (email,deposito,data) VALUES ('"
-                    + email + "'," + deposito + ", '" + sqlDate + "')");
+            // Executa a query
+            pstmt.executeUpdate();
 
-        }catch (SQLException e){
-            System.err.println("Erro ao depositar");
+        } catch (SQLException e) {
+            System.err.println("Erro ao depositar: " + e.getMessage());
         }
     }
+
 
     public ArrayList<Deposito> selectDepositos(String email, LocalDate data) {
         int dataMes = data.getMonthValue();
         int dataAno = data.getYear();
 
-        try (Statement stat = con.createStatement()){
+        String sql = "SELECT * FROM fluxoCaixaDeposito WHERE email = ? " +
+                "AND CAST(strftime('%m', data) AS INTEGER) = ? " +
+                "AND CAST(strftime('%Y', data) AS INTEGER) = ?";
+
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
             ArrayList<Deposito> depositos = new ArrayList<>();
 
-            ResultSet resultado = stat.executeQuery("select * from fluxoCaixaDeposito where email = '" + email +  "'" +
-                    " and CAST(strftime('%m', data) AS INTEGER) = " + dataMes + "and CAST(strftime('%Y', data)AS INTEGER) = " + dataAno);
+            pstmt.setString(1, email);
+            pstmt.setInt(2, dataMes);
+            pstmt.setInt(3, dataAno);
 
-            while(resultado.next()){
+            ResultSet resultado = pstmt.executeQuery();
+
+            while (resultado.next()) {
                 Deposito deposito = new Deposito(email);
                 deposito.setValor(resultado.getFloat("deposito"));
                 deposito.setData(resultado.getDate("data").toLocalDate());
@@ -49,9 +56,10 @@ public class DepositoDao {
 
             return depositos;
 
-        } catch (SQLException e){
-            System.err.println("Erro ao buscar Depositos" + e);
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar Depósitos: " + e.getMessage());
         }
         return null;
     }
+
 }
