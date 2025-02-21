@@ -36,7 +36,7 @@ public class Debito {
         this.valor = valor;
     }
 
-    SaldoAtualDao saldoDao = new SaldoAtualDao();
+   ;
 
     public void debitaSaldo() {
         Scanner entrada = new Scanner(System.in);
@@ -47,11 +47,15 @@ public class Debito {
         if (validaSaldo == false) {
             System.out.println("Você não possui saldo sufuciente para completar esse deposito");
         } else {
+            SaldoAtualDao saldoDao = new SaldoAtualDao();
             saldoDao.updateDebitoSaldo(email, valor);
+            DebitoDao debitoDao = new DebitoDao();
+            debitoDao.insertDebito(email,valor,LocalDate.now());
         }
     }
 
     public boolean validaSaldo(float deposito) {
+        SaldoAtualDao saldoDao = new SaldoAtualDao();
         float saldo = saldoDao.selectSaldo(email);
         if (deposito > saldo) {
             return false;

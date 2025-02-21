@@ -35,12 +35,16 @@ public class Deposito {
     public void setValor(float valor) {
         this.valor = valor;
     }
-    SaldoAtualDao saldoDao = new SaldoAtualDao();
+
     public void depositaSaldo(){
+
         Scanner entrada = new Scanner(System.in);
         System.out.println("Informe o valor que deseja depositar no saldo: ");
         float valor = entrada.nextFloat();
         entrada.nextLine();
+        SaldoAtualDao saldoDao = new SaldoAtualDao();
         saldoDao.updateDepositoSaldo(email, valor);
+       DepositoDao depositoDao = new DepositoDao();
+       depositoDao.insertDeposito(email,valor,LocalDate.now());
     }
 }

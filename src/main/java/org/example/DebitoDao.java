@@ -1,9 +1,6 @@
 package org.example;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -16,17 +13,21 @@ public class DebitoDao {
     }
 
     public void insertDebito(String email, float debito, LocalDate data) {
-        try(Statement stat = con.createStatement()){
+        String sql = "INSERT INTO fluxoCaixaDebito (email, debito, data) VALUES (?, ?, ?)";
 
-            // Converte LocalDate para java.sql.Date
-            java.sql.Date sqlDate = java.sql.Date.valueOf(data);
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
 
-            // Monta a query concatenando os valores
-            stat.executeUpdate( "INSERT INTO fluxoCaixaDebito (email,debito, data) VALUES ('"
-                    + email + "', '," + debito + ", '" + sqlDate + "')");
-            stat.close();
-        }catch (SQLException e){
-            System.err.println("Erro ao debitar fixa");
+            // Configura os parâmetros de forma segura
+            pstmt.setString(1, email);
+            pstmt.setFloat(2, debito);
+            pstmt.setDate(3, java.sql.Date.valueOf(data));  // Converte LocalDate para java.sql.Date
+
+            // Executa a inserção
+            pstmt.executeUpdate();
+            System.out.println("Débito inserido com sucesso!");
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao debitar fixa: " + e.getMessage());
         }
     }
 
@@ -34,24 +35,35 @@ public class DebitoDao {
         int dataMes = data.getMonthValue();
         int dataAno = data.getYear();
 
-        try(Statement stat = con.createStatement()) {
-            ArrayList<Debito> debitos = new ArrayList<>();
+        ArrayList<Debito> debitos = new ArrayList<>();
 
-            ResultSet resultado = stat.executeQuery("select * from fluxoCaixaDebito where email = '" + email + "'" +
-                    " and CAST(strftime('%m', data) AS INTEGER) = " + dataMes + "and CAST(strftime('%Y', data)AS INTEGER) = " + dataAno);
+        String sql = "SELECT * FROM fluxoCaixaDebito WHERE email = ? " +
+                "AND CAST(strftime('%m', data) AS INTEGER) = ? " +
+                "AND CAST(strftime('%Y', data) AS INTEGER) = ?";
 
-            while(resultado.next()){
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+
+            // Define os parâmetros da consulta
+            pstmt.setString(1, email);
+            pstmt.setInt(2, dataMes);
+            pstmt.setInt(3, dataAno);
+
+            ResultSet resultado = pstmt.executeQuery();
+
+            // Itera sobre o resultado e adiciona os débitos à lista
+            while (resultado.next()) {
                 Debito debito = new Debito(email);
                 debito.setValor(resultado.getFloat("debito"));
                 debito.setData(resultado.getDate("data").toLocalDate());
                 debitos.add(debito);
             }
-            return debitos;
 
-        } catch (SQLException e){
-            System.err.println("Erro ao buscar Debitos" + e);
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar Débitos: " + e.getMessage());
         }
-        return null;
+
+        return debitos;
     }
-    
+
+
 }

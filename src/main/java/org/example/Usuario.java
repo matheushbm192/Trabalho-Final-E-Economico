@@ -106,7 +106,7 @@ public class Usuario {
 
     public void exibirFluxoCaixa() {
         FluxoCaixa fluxo = new FluxoCaixa(email);
-        //todo:fazer
+        fluxo.exibirInformacoes();
     }
     public void inserirDebitoDeposito() {
         Scanner entrada = new Scanner(System.in);
