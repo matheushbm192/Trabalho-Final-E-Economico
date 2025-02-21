@@ -87,7 +87,6 @@ public class Usuario {
             break;
 
         }
-        // todo: fazer
     }
 
     public void modificarDespesasFixas() {

@@ -48,7 +48,7 @@ public class DespesasFixas extends OperacaoConta {
     @Override
     public void exibirInformacoes() {
         DespesasFixasDao dao = new DespesasFixasDao();
-        ArrayList<DespesasFixas> despesasFixas = dao.selectDespesaFixas(email, LocalDate.now());
+        ArrayList<DespesasFixas> despesasFixas = dao.selectDespesasFixas(email, LocalDate.now());
         if (despesasFixas.size() == 0) {
             System.out.println("Não há nenhuma despesa fixa cadastrada.");
         } else {

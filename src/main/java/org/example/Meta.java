@@ -1,5 +1,6 @@
 package org.example;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -45,6 +46,8 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
 
     MetaDao dao = new MetaDao();
     SaldoAtualDao saldoDao = new SaldoAtualDao();
+    DebitoDao debitoDao = new DebitoDao();
+    DepositoDao depositoDao = new DepositoDao();
 
     @Override
     public void exibirInformacoes() {
@@ -55,7 +58,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
             for (Meta meta : metas) {
                 dataset.addValue(meta.getValorMeta(), "Valor da Meta", meta.getNomeMeta());
                 dataset.addValue(meta.getMontante(), "Montante Depositado", meta.getNomeMeta());
-                System.out.println(meta.getNomeMeta());
+                
             }
         }
     
@@ -82,7 +85,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
             } else {
                 dao.updateDebitarMontanteMeta(email, nome, valorDebito);
                 saldoDao.updateDepositoSaldo(nome, valorDebito);
-                // todo: acrescentar ao fluxo de caixa 
+                depositoDao.insertDeposito(email, valorDebito, null);
             }
         }
     }
@@ -105,8 +108,8 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
             } else {
                 dao.updateDepositarValorMeta(email, nome, valor);
                 saldoDao.updateDebitoSaldo(email, valor);
+                debitoDao.insertDebito(email, valor, LocalDate.now());
             }
-            // adicionar ao fluxo de caixa
         }
     }
 
@@ -221,6 +224,9 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
         if (existe == false) {
             System.out.println("Essa meta não existe. Portanto, não pode ser apagada.");
         } else {
+            Meta meta = dao.selectMeta(email, nome);
+            float valorMeta = meta.getValorMeta();
+            depositoDao.insertDeposito(email, valorMeta, LocalDate.now());
             dao.deleteMeta(email, nome);
         }
 
