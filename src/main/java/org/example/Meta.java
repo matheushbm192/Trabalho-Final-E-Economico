@@ -114,52 +114,52 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
 
 
     public void menu() {
+        boolean continuar = true;
 
-        System.out.println("Menu metas:");
-        System.out.println("1- Registre uma meta;");
-        System.out.println("2- Exibir metas graficamente;");
-        System.out.println("3- Depositar em uma meta;");
-        System.out.println("4- Debitar em uma meta;");
-        System.out.println("5- Deletar meta;");
-        System.out.println("6- Modificar nome da meta ");
-        System.out.println("7- Modificar valor da meta");
-        System.out.println("8- Sair;");
-
-        int resposta = entrada.nextInt();
-        entrada.nextLine();
-
-        switch (resposta) {
-            case 1:
-                registrarMeta();
-                break;
-            case 2:
-                exibirInformacoes();
-                break;
-            case 3:
-                depositar();
-                break;
-            case 4:
-                debitar();
-                break;
-            case 5:
-                deletar();
-                break;
-            case 6:
-                modificarNome();
-                break;
-            case 7:
-                modificarValor();
-                break;
-            case 8:
-                // sair();
-                break;
-
-            default:
-                System.out.println("Resposta inválida. Tente novamente.");
-                break;
+        while (continuar) {
+            System.out.println("Menu metas:");
+            System.out.println("1- Registre uma meta;");
+            System.out.println("2- Exibir metas graficamente;");
+            System.out.println("3- Depositar em uma meta;");
+            System.out.println("4- Debitar em uma meta;");
+            System.out.println("5- Deletar meta;");
+            System.out.println("6- Modificar nome da meta ");
+            System.out.println("7- Modificar valor da meta");
+            System.out.println("8- Sair;");
+    
+            int resposta = entrada.nextInt();
+            entrada.nextLine(); 
+    
+            switch (resposta) {
+                case 1:
+                    registrarMeta();
+                    break;
+                case 2:
+                    exibirInformacoes();
+                    break;
+                case 3:
+                    depositar();
+                    break;
+                case 4:
+                    debitar();
+                    break;
+                case 5:
+                    deletar();
+                    break;
+                case 6:
+                    modificarNome();
+                    break;
+                case 7:
+                    modificarValor();
+                    break;
+                case 8:
+                    continuar = false; 
+                    break;
+                default:
+                    System.out.println("Resposta inválida. Tente novamente.");
+                    break;
+            }
         }
-        menu();
-
     }
 
     public boolean validaSaldo(float deposito) {

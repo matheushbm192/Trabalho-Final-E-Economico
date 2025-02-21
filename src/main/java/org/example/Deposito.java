@@ -1,6 +1,7 @@
 package org.example;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class Deposito {
     private String email;
@@ -33,5 +34,13 @@ public class Deposito {
 
     public void setValor(float valor) {
         this.valor = valor;
+    }
+    SaldoAtualDao saldoDao = new SaldoAtualDao();
+    public void depositaSaldo(){
+        Scanner entrada = new Scanner(System.in);
+        System.out.println("Informe o valor que deseja depositar no saldo: ");
+        float valor = entrada.nextFloat();
+        entrada.nextLine();
+        saldoDao.updateDepositoSaldo(email, valor);
     }
 }

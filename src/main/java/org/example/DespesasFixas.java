@@ -47,7 +47,7 @@ public class DespesasFixas extends OperacaoConta {
 
     @Override
     public void exibirInformacoes() {
-        ArrayList<DespesasFixas> despesasFixas = dao.selectDespesaFixas(email,LocalDate.now());
+        ArrayList<DespesasFixas> despesasFixas = dao.selectDespesaFixas(email);
         if (despesasFixas.size() == 0) {
             System.out.println("Não há nenhuma despesa fixa cadastrada.");
         } else {
@@ -62,39 +62,42 @@ public class DespesasFixas extends OperacaoConta {
     }
 
     public void menu() {
-        System.out.println("Menu de despesa fixa:");
-        System.out.println("1- Registre uma despesa;");
-        System.out.println("2- Exibir despesas;");
-        System.out.println("3- Modificar valor da despesa;");
-        System.out.println("4- Deletar despesa;");
-        System.out.println("5- Sair;");
-        //todo: criar função que debita do saldo uma despesa que esta na data de pagar
+        boolean continuar = true;
 
-        int resposta = entrada.nextInt();
-        entrada.nextLine();
+        while (continuar) {
+            System.out.println("Menu de despesa fixa:");
+            System.out.println("1- Registre uma despesa;");
+            System.out.println("2- Exibir despesas;");
+            System.out.println("3- Modificar valor da despesa;");
+            System.out.println("4- Deletar despesa;");
+            System.out.println("5- Sair;");
+            // todo: criar função que debita do saldo uma despesa que esta na data de pagar
 
-        switch (resposta) {
-            case 1:
-                registrarDesepesaFixa();
-                break;
-            case 2:
-                exibirInformacoes();
-                break;
-            case 3:
-                modificarValor();
-                break;
-            case 4:
-                deletarDespesa();
-                break;
-            case 5:
-                // sair();
-                break;
+            int resposta = entrada.nextInt();
+            entrada.nextLine();
 
-            default:
-                System.out.println("Resposta inválida. Tente novamente.");
-                break;
+            switch (resposta) {
+                case 1:
+                    registrarDesepesaFixa();
+                    break;
+                case 2:
+                    exibirInformacoes();
+                    break;
+                case 3:
+                    modificarValor();
+                    break;
+                case 4:
+                    deletarDespesa();
+                    break;
+                case 5:
+                    continuar = false;
+                    break;
+
+                default:
+                    System.out.println("Resposta inválida. Tente novamente.");
+                    break;
+            }
         }
-        menu();
     }
 
     public void registrarDesepesaFixa() {

@@ -13,7 +13,7 @@ public class DespesasFixasDao {
         con = Database.getInstance().getConnection();
     }
 
-    //fazer esse
+   
     public DespesasFixas selectDespesaFixa(String email, String nome){
         try {
 
@@ -39,7 +39,7 @@ public class DespesasFixasDao {
 
 
     }
-    //fazer esse
+ 
     public void UpdateValorDespesa(String email, String nome, float valorDesejado){
         try {
             Statement stat = con.createStatement();
