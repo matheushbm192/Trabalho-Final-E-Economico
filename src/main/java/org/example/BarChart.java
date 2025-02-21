@@ -36,23 +36,24 @@ public class BarChart extends JFrame {
     // Método para criar o gráfico de barras
     private JFreeChart createChart(String titulo, String eixoX, String eixoY, CategoryDataset dataset) {
         JFreeChart chart = ChartFactory.createBarChart(
-                titulo,    // Título do gráfico
-                eixoX,     // Eixo X
-                eixoY,     // Eixo Y
+                titulo, // Título do gráfico
+                eixoX, // Eixo X
+                eixoY, // Eixo Y
                 dataset,
                 PlotOrientation.VERTICAL, // Orientação vertical
-                true,      // Exibir legenda
-                true,      // Exibir tooltips
-                false      // Sem URLs
+                true, // Exibir legenda
+                true, // Exibir tooltips
+                false // Sem URLs
         );
 
         // Melhorando a aparência do gráfico
         CategoryPlot plot = chart.getCategoryPlot();
         BarRenderer renderer = (BarRenderer) plot.getRenderer();
-        renderer.setSeriesPaint(0, new Color(79, 129, 189)); // Cor para "Valor da Meta"
-        renderer.setSeriesPaint(1, new Color(192, 80, 77));  // Cor para "Montante Depositado"
-        renderer.setMaximumBarWidth(0.05); // Reduz a largura das barras 
-
+        renderer.setSeriesPaint(0, new Color(255, 0, 0)); // Vermelho
+        renderer.setSeriesPaint(1, new Color(0, 255, 0)); // Verde
+        renderer.setSeriesPaint(2, new Color(0, 0, 255)); // Azul
+        renderer.setSeriesPaint(3, new Color(255, 165, 0)); // Laranja
+        renderer.setMaximumBarWidth(0.05); // Reduz a largura das barras
 
         // Ajustar espaçamentos entre as barras
         plot.getDomainAxis().setCategoryMargin(0.2);
