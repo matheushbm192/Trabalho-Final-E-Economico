@@ -33,6 +33,7 @@ public class Main {
             System.out.println("4 - Metas");
             System.out.println("5 - Reserva de Emergencia");
             System.out.println("6 - Exibir Fluxo de caixa");
+            System.out.println("7 - Vizualizar Saldo atual");
             Scanner entrada = new Scanner(System.in);
             int escolha = entrada.nextInt();
             entrada.nextLine();
@@ -55,6 +56,8 @@ public class Main {
                 case 6:
                     usuario.exibirFluxoCaixa();
                     break;
+                case 7:
+                    usuario.exibirSaldoAtual();
                 default:
                     System.out.println("O valor inserido não é valido ,insira novamente!");
             }

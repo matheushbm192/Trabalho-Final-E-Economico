@@ -135,4 +135,8 @@ public class Usuario {
 
     }
 
+    public void exibirSaldoAtual() {
+        SaldoAtual saldo= new SaldoAtual(email);
+        saldo.exibirInformacoes();
+    }
 }

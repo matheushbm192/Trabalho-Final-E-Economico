@@ -81,7 +81,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
                 System.out.println("Não há saldo suficiente na meta para esta retirada.");
             } else {
                 dao.updateDebitarMontanteMeta(email, nome, valorDebito);
-                saldoDao.updateDepositoSaldo(nome, valorDebito);
+                saldoDao.updateDepositoSaldo(email, valorDebito);
                 // todo: acrescentar ao fluxo de caixa 
             }
         }

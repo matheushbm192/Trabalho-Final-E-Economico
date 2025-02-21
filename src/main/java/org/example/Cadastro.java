@@ -30,7 +30,8 @@ public class Cadastro {
 
         CadastroDao cadastroDao = new CadastroDao();
         cadastroDao.insert(nome,email,senha,regimeTrab,salario);
-
+        SaldoAtualDao saldoAtualDao = new SaldoAtualDao();
+        saldoAtualDao.insertSaldo(email);
         return true;
         
 
