@@ -16,15 +16,10 @@ public class FluxoCaixa extends OperacaoConta {
     @Override
     public void exibirInformacoes() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        DebitoDao debitoDao = new DebitoDao();
-        ArrayList<Debito> debitos = debitoDao.selectDebitos(email, LocalDate.now());
-        DepositoDao depositoDao = new DepositoDao();
-        ArrayList<Deposito> depositos = depositoDao.selectDepositos(email, LocalDate.now());
-
 
         float totalFluxo = gerarFluxo(email);
-        double totalDebitos = calcularTotalDebitos();
-        double totalDepositos = calcularTotalDepositos();
+        float totalDebitos = calcularTotalDebitos();
+        float totalDepositos = calcularTotalDepositos();
 
         dataset.addValue(totalDebitos, "Débito", "Resumo Financeiro");
         dataset.addValue(totalDepositos, "Depósito", "Resumo Financeiro");
@@ -33,8 +28,8 @@ public class FluxoCaixa extends OperacaoConta {
         new BarChart("Resumo Financeiro", "Categoria", "Valor", dataset);
     }
 
-    private double calcularTotalDebitos() {
-        double total = 0;
+    private float calcularTotalDebitos() {
+        float total = 0;
 
         try {
             DebitoDao debitoDao = new DebitoDao();
@@ -44,6 +39,7 @@ public class FluxoCaixa extends OperacaoConta {
                 for (Debito debito : debitos) {
                     total += debito.getValor();
                 }
+                return total;
             }
         } catch (Exception e) {
             System.err.println("Erro ao calcular total de débitos: " + e.getMessage());
@@ -52,8 +48,8 @@ public class FluxoCaixa extends OperacaoConta {
         return total;
     }
 
-    private double calcularTotalDepositos() {
-        double total = 0;
+    private float calcularTotalDepositos() {
+        float total = 0;
 
         try {
             DepositoDao depositoDao = new DepositoDao();
@@ -63,6 +59,7 @@ public class FluxoCaixa extends OperacaoConta {
                 for (Deposito deposito : depositos) {
                     total += deposito.getValor();
                 }
+                return total;
             }
         } catch (Exception e) {
             System.err.println("Erro ao calcular total de depósitos: " + e.getMessage());
@@ -94,6 +91,7 @@ public class FluxoCaixa extends OperacaoConta {
             }
 
         } catch (Exception e) {
+            System.out.println("Erro ao calcular fluxo de caixa "+e);
             return 0;
         }
         // Retorna o saldo final (depósitos - débitos)
