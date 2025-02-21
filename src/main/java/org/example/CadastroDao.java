@@ -12,9 +12,9 @@ public class CadastroDao {
     }
 
     public void insert(String nome,String email, String senha,String regime, float salario)  {
-        Statement stat = null;
-        try{
-            stat = con.createStatement();
+
+        try(Statement stat = con.createStatement()){
+
             stat.executeUpdate("insert into usuario(email,nome,senha,regime,salario) values('"
                     + email + "','"
                     + nome + "','"
@@ -23,15 +23,9 @@ public class CadastroDao {
                     + salario + ")");
         }catch (SQLException e){
             System.err.println("Erro ao cadastrar usuario "+ e);
-        }finally {
-            try{
-                if (stat != null) stat.close();
-                if (con != null) con.close();
-            }catch (SQLException u){
-                System.err.println("Error ao fechar a conexao "+ u);
-            }
-
         }
-       // email string, nome string, senha string, regime string, salario float);
+
     }
+       // email string, nome string, senha string, regime string, salario float);
+
 }

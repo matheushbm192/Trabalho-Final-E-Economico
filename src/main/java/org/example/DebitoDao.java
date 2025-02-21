@@ -16,9 +16,8 @@ public class DebitoDao {
     }
 
     public void insertDebito(String email, float debito, LocalDate data) {
-        try{
+        try(Statement stat = con.createStatement()){
 
-            Statement stat = con.createStatement();
             // Converte LocalDate para java.sql.Date
             java.sql.Date sqlDate = java.sql.Date.valueOf(data);
 
@@ -35,9 +34,9 @@ public class DebitoDao {
         int dataMes = data.getMonthValue();
         int dataAno = data.getYear();
 
-        try {
+        try(Statement stat = con.createStatement()) {
             ArrayList<Debito> debitos = new ArrayList<>();
-            Statement stat = con.createStatement();
+
             ResultSet resultado = stat.executeQuery("select * from fluxoCaixaDebito where email = '" + email + "'" +
                     " and CAST(strftime('%m', data) AS INTEGER) = " + dataMes + "and CAST(strftime('%Y', data)AS INTEGER) = " + dataAno);
 
@@ -47,8 +46,6 @@ public class DebitoDao {
                 debito.setData(resultado.getDate("data").toLocalDate());
                 debitos.add(debito);
             }
-            stat.close();
-
             return debitos;
 
         } catch (SQLException e){

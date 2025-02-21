@@ -15,7 +15,7 @@ public class DespesasFixas extends OperacaoConta {
     private LocalDate data;
 
     Scanner entrada = new Scanner(System.in);
-    DespesasFixasDao dao = new DespesasFixasDao();
+
 
     public DespesasFixas(String email) {
         this.email = email;
@@ -47,7 +47,8 @@ public class DespesasFixas extends OperacaoConta {
 
     @Override
     public void exibirInformacoes() {
-        ArrayList<DespesasFixas> despesasFixas = dao.selectDespesasFixas(email, LocalDate.now());
+        DespesasFixasDao dao = new DespesasFixasDao();
+        ArrayList<DespesasFixas> despesasFixas = dao.selectDespesaFixas(email, LocalDate.now());
         if (despesasFixas.size() == 0) {
             System.out.println("Não há nenhuma despesa fixa cadastrada.");
         } else {
@@ -100,7 +101,7 @@ public class DespesasFixas extends OperacaoConta {
     }
 
     public void registrarDesepesaFixa() {
-
+        DespesasFixasDao dao = new DespesasFixasDao();
         Scanner entrada = new Scanner(System.in);
         boolean respDespesas = true;
 
@@ -127,6 +128,7 @@ public class DespesasFixas extends OperacaoConta {
     }
 
     public boolean validaDespesa(String nomeDespesa) {
+        DespesasFixasDao dao = new DespesasFixasDao();
         DespesasFixas despesa = dao.selectDespesaFixa(email, nomeDespesa);
         if (despesa == null) {
             return false;
@@ -136,6 +138,7 @@ public class DespesasFixas extends OperacaoConta {
     }
 
     public void deletarDespesa() {
+        DespesasFixasDao dao = new DespesasFixasDao();
         System.out.println("Informe o nome da despesa que você deseja deletar: ");
         String nomeDespesa = entrada.nextLine();
         boolean validaDespesa = validaDespesa(nomeDespesa);
@@ -147,6 +150,7 @@ public class DespesasFixas extends OperacaoConta {
     }
 
     public void modificarValor() {
+        DespesasFixasDao dao = new DespesasFixasDao();
         System.out.println("Informe o nome da despesa que você deseja modificar: ");
         String nomeDespesa = entrada.nextLine();
         boolean validaDespesa = validaDespesa(nomeDespesa);

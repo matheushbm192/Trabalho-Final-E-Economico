@@ -13,10 +13,10 @@ public class LoginDao {
         con = Database.getInstance().getConnection();
     }
      public Usuario validaUsuario(String email, String senha) {
-         Statement stat = null;
+
          ResultSet resultados = null;
-        try{
-            stat = con.createStatement();
+        try(Statement stat = con.createStatement();){
+
             //reate table if not exists usuario (email string, name string, senha string, regime string, salario float)
             resultados = stat.executeQuery("select * from usuario where email = '" + email +"' AND senha = '"+ senha+"'");
             if(resultados.next()){

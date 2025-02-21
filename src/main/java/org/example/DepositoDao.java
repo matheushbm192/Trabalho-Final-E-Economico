@@ -16,16 +16,15 @@ public class DepositoDao {
     }
 
     public void insertDeposito(String email, float deposito, LocalDate data) {
-        try{
+        try(Statement stat = con.createStatement()){
 
-            Statement stat = con.createStatement();
             // Converte LocalDate para java.sql.Date
             java.sql.Date sqlDate = java.sql.Date.valueOf(data);
 
             // Monta a query concatenando os valores
             stat.executeUpdate( "INSERT INTO fluxoCaixaDeposito (email,deposito,data) VALUES ('"
                     + email + "'," + deposito + ", '" + sqlDate + "')");
-            stat.close();
+
         }catch (SQLException e){
             System.err.println("Erro ao depositar");
         }
@@ -35,9 +34,9 @@ public class DepositoDao {
         int dataMes = data.getMonthValue();
         int dataAno = data.getYear();
 
-        try {
+        try (Statement stat = con.createStatement()){
             ArrayList<Deposito> depositos = new ArrayList<>();
-            Statement stat = con.createStatement();
+
             ResultSet resultado = stat.executeQuery("select * from fluxoCaixaDeposito where email = '" + email +  "'" +
                     " and CAST(strftime('%m', data) AS INTEGER) = " + dataMes + "and CAST(strftime('%Y', data)AS INTEGER) = " + dataAno);
 
@@ -47,7 +46,6 @@ public class DepositoDao {
                 deposito.setData(resultado.getDate("data").toLocalDate());
                 depositos.add(deposito);
             }
-            stat.close();
 
             return depositos;
 
