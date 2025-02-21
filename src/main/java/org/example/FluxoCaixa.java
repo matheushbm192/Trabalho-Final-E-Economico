@@ -20,8 +20,8 @@ public class FluxoCaixa extends OperacaoConta {
     public void exibirInformacoes() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-        ArrayList<Debito> debitos = debitoDao.selectDebitos(email);
-        ArrayList<Deposito> depositos = depositoDao.selectDepositos(email);
+        ArrayList<Debito> debitos = debitoDao.selectDebitos(email, LocalDate.now());
+        ArrayList<Deposito> depositos = depositoDao.selectDepositos(email, LocalDate.now());
 
 
         float totalFluxo = gerarFluxo(email);
@@ -30,6 +30,7 @@ public class FluxoCaixa extends OperacaoConta {
 
         dataset.addValue(totalDebitos, "Débito", "Resumo Financeiro");
         dataset.addValue(totalDepositos, "Depósito", "Resumo Financeiro");
+        dataset.addValue(totalFluxo, "Fluxo de Caixa", "Resumo Financeiro");
 
         new BarChart("Resumo Financeiro", "Categoria", "Valor", dataset);
     }
