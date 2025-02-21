@@ -85,7 +85,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
             } else {
                 dao.updateDebitarMontanteMeta(email, nome, valorDebito);
                 saldoDao.updateDepositoSaldo(nome, valorDebito);
-                depositoDao.insertDeposito(email, valorDebito, null);
+                depositoDao.insertDeposito(email, valorDebito, LocalDate.now());
             }
         }
     }
