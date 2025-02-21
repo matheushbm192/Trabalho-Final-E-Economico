@@ -58,6 +58,7 @@ public class FluxoCaixa extends OperacaoConta {
         ArrayList<Deposito> depositos = new DepositoDao().selectDepositos(email,LocalDate.now());
         float resultadoDebito = 0;
         float resultadoDeposito = 0;
+
         for(Debito debito : debitos ){
             resultadoDebito += debito.getValor();
         }
