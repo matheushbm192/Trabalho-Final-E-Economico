@@ -15,8 +15,8 @@ public class SaldoAtualDao {
 
     public float selectSaldo(String email){
         float saldo = 0;
-        try {
-            Statement stat = con.createStatement();
+        try (Statement stat = con.createStatement()){
+
             ResultSet resultado = stat.executeQuery("select valor from saldoAtual where email = '" + email + "'");
 
 
@@ -33,21 +33,21 @@ public class SaldoAtualDao {
     }
 
     public void updateDebitoSaldo(String email, float valor) {
-        try {
-            Statement stat = con.createStatement();
+        try (Statement stat = con.createStatement()){
+
             stat.executeUpdate(
                     "update saldoAtual set valor = valor - " + valor + " where email = '" + email + "'");
-            stat.close();
+
         } catch (SQLException e) {
             System.err.println("Erro ao debitar em saldoAtual");
         }
     }
     public void updateDepositoSaldo(String email, float valor) {
-        try {
-            Statement stat = con.createStatement();
+        try (Statement stat = con.createStatement()){
+
             stat.executeUpdate(
                     "update saldoAtual set valor = valor + " + valor + " where email = '" + email + "'");
-            stat.close();
+
         } catch (SQLException e) {
             System.err.println("Erro ao depositar em saldoAtual");
         }

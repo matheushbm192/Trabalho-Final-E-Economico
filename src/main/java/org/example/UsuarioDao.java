@@ -14,21 +14,6 @@ public class UsuarioDao {
     }
 
 
-    public Usuario selectUsuario(String email) throws SQLException {
-        Statement stat = con.createStatement();
-        ResultSet rs = stat.executeQuery("select from usuario where email = '" + email+"'");
-
-        if(rs.next()){
-           // Usuario usuario = new Usuario();
-          //  usuario.setEmail(rs.getString("email"));
-           // usuario.setName(rs.getString("name"));
-            stat.close();
-         //   return usuario;
-        }
-        stat.close();
-        return null;
-    }
-
     public void update(String email, float valorDesejado) {
         String sql = "UPDATE usuario SET salario = ? WHERE email = ?";
 

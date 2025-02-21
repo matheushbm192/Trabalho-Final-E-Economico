@@ -14,8 +14,8 @@ public class ReservaEmergenciaDao {
     }
 
     public ReservaEmergencia selectReservaEmergencia(String email) {
-        try {
-            Statement stat = con.createStatement();
+        try (Statement stat = con.createStatement()){
+
             ResultSet resultado = stat.executeQuery("select * from reservaEmergencia where email = '" + email + "'");
 
             ReservaEmergencia reserva = new ReservaEmergencia(email);
@@ -32,10 +32,10 @@ public class ReservaEmergenciaDao {
 
 
     public void insertReservaEmergencia(String email, float valor) {
-        try {
-            Statement stat = con.createStatement();
+        try (Statement stat = con.createStatement()){
+
             stat.executeUpdate("insert into reservaEmergencia(email,valor) values('" + email + "'," + valor + ")");
-            stat.close();
+
             // todo: retirar do saldo atual
         } catch (SQLException e) {
             System.err.println("Erro ao inserir Reserva de Emergencia");
@@ -43,11 +43,11 @@ public class ReservaEmergenciaDao {
     }
 
     public void updateDepositarReservaEmergencia(String email, float valor) {
-        try {
-            Statement stat = con.createStatement();
+        try (Statement stat = con.createStatement()){
+
             stat.executeUpdate(
                     "update reservaEmergencia set valor = valor + " + valor + " where email = '" + email + "'");
-            stat.close();
+
             // todo: tirar do saldo atual
         } catch (SQLException e) {
             System.err.println("Erro ao inserir Reserva de Emergencia");
@@ -55,11 +55,11 @@ public class ReservaEmergenciaDao {
     }
 
     public void updateDebitarReservaEmergencia(String email, float valor) {
-        try {
-            Statement stat = con.createStatement();
+        try (Statement stat = con.createStatement()){
+
             stat.executeUpdate(
                     "update reservaEmergencia set valor = valor - " + valor + " where email = '" + email + "'");
-            stat.close();
+
         } catch (SQLException e) {
             System.err.println("Erro ao inserir Reserva de Emergencia");
         }
