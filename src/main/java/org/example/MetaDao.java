@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 public class MetaDao {
@@ -15,22 +14,25 @@ public class MetaDao {
     }
 
     public ArrayList<Meta> selectMetas(String email) {
-        try {
-            ArrayList<Meta> metas = new ArrayList<>();
-            Statement stat = con.createStatement();
-            ResultSet resultadoss = stat.executeQuery("select * from meta where email = '" + email + "'");
-            while (resultadoss.next()) {
+        String sql = "SELECT * FROM meta WHERE email = ?";
+        ArrayList<Meta> metas = new ArrayList<>();
+
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
                 Meta meta = new Meta(email);
-                meta.setNomeMeta(resultadoss.getString("nome"));
-                meta.setValorMeta(resultadoss.getFloat("valor"));
-                meta.setMontante(resultadoss.getFloat("montante"));
+                meta.setNomeMeta(rs.getString("nome"));
+                meta.setValorMeta(rs.getFloat("valor"));
+                meta.setMontante(rs.getFloat("montante"));
                 metas.add(meta);
             }
-            return metas;
+            rs.close();
         } catch (SQLException e) {
-            System.err.println("Erro ao buscar Metas " + e);
+            System.err.println("Erro ao buscar Metas: " + e.getMessage());
         }
-        return null;
+        return metas;
     }
 
     public Meta selectMeta(String email, String nome) {
@@ -38,15 +40,17 @@ public class MetaDao {
         try (PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, email);
             stmt.setString(2, nome);
-            ResultSet resultado = stmt.executeQuery();
+            ResultSet rs = stmt.executeQuery();
 
-            if (resultado.next()) {
+            if (rs.next()) {
                 Meta meta = new Meta(email);
-                meta.setNomeMeta(resultado.getString("nome"));
-                meta.setValorMeta(resultado.getFloat("valor"));
-                meta.setMontante(resultado.getFloat("montante"));
+                meta.setNomeMeta(rs.getString("nome"));
+                meta.setValorMeta(rs.getFloat("valor"));
+                meta.setMontante(rs.getFloat("montante"));
+                rs.close();
                 return meta;
             }
+            rs.close();
         } catch (SQLException e) {
             System.err.println("Erro ao buscar Meta: " + e.getMessage());
         }
@@ -54,77 +58,86 @@ public class MetaDao {
     }
 
     public void insertMeta(String email, String nome, float valor) {
-        try {
-            Statement stat = con.createStatement();
-            stat.executeUpdate("insert into meta(email,nome,valor) values(" + email + ",'" + nome + "'," + valor + ")");
-            stat.close();
+        String sql = "INSERT INTO meta (email, nome, valor, montante) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            stmt.setString(2, nome);
+            stmt.setFloat(3, valor);
+            stmt.setFloat(4, 0.0f); // Inicializa montante com 0
+
+            stmt.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Erro ao inserir Meta");
+            System.err.println("Erro ao inserir Meta: " + e.getMessage());
         }
     }
 
-    public void UpdateValorMeta(String email, String nome, float valorDesejado) {
+    public void updateValorMeta(String email, String nome, float valorDesejado) {
+        String sql = "UPDATE meta SET valor = ? WHERE email = ? AND nome = ?";
 
-        try {
-            Statement stat = con.createStatement();
-            stat.executeUpdate("update meta set valor = " + valorDesejado + " where email = '" + email
-                    + "' AND nome = '" + nome + "'");
-            stat.close();
-            // todo: criar tratamentos para não deixar o usuario usar sem ter cadastrado um
-            // reserva de emergencia
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setFloat(1, valorDesejado);
+            stmt.setString(2, email);
+            stmt.setString(3, nome);
+
+            stmt.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Erro ao atualizar valor da meta");
-        }
-
-    }
-
-    public void UpdateNomeMeta(String email, String nome, String nomeDesejado) {
-
-        try {
-            Statement stat = con.createStatement();
-            stat.executeUpdate("update meta set nome = '" + nomeDesejado + "' where email = '" + email
-                    + "' AND nome = '" + nome + "'");
-            stat.close();
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao Atualizar nome da Meta" + e);
-        }
-
-    }
-
-    public void UpdateDepositarValorMeta(String email, String nome, float valorDeposito) {
-        try {
-            Statement stat = con.createStatement();
-            stat.executeUpdate("update meta set montante = montante + " + valorDeposito + " where email = '" + email
-                    + "'AND nome = '" + nome + "'");
-            stat.close();
-            // todo: debitar do saldo atual
-        } catch (SQLException e) {
-            System.err.println("Erro ao depositar valor na Meta" + e);
+            System.err.println("Erro ao atualizar valor da meta: " + e.getMessage());
         }
     }
 
-    public void UpdateDebitarMontanteMeta(String email, String nome, float valorDebito) {
-        try {
-            Statement stat = con.createStatement();
-            stat.executeUpdate("update meta set montate = montante - " + valorDebito + " where email = '" + email
-                    + "'AND nome = '" + nome + "'");
-            stat.close();
-            // todo: acrescentar ao saldo atual
+    public void updateNomeMeta(String email, String nome, String nomeDesejado) {
+        String sql = "UPDATE meta SET nome = ? WHERE email = ? AND nome = ?";
 
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, nomeDesejado);
+            stmt.setString(2, email);
+            stmt.setString(3, nome);
+
+            stmt.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Erro ao debitar valor na Meta" + e);
+            System.err.println("Erro ao atualizar nome da Meta: " + e.getMessage());
+        }
+    }
+
+    public void updateDepositarValorMeta(String email, String nome, float valorDeposito) {
+        String sql = "UPDATE meta SET montante = montante + ? WHERE email = ? AND nome = ?";
+
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setFloat(1, valorDeposito);
+            stmt.setString(2, email);
+            stmt.setString(3, nome);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao depositar valor na Meta: " + e.getMessage());
+        }
+    }
+
+    public void updateDebitarMontanteMeta(String email, String nome, float valorDebito) {
+        String sql = "UPDATE meta SET montante = montante - ? WHERE email = ? AND nome = ?";
+
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setFloat(1, valorDebito);
+            stmt.setString(2, email);
+            stmt.setString(3, nome);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao debitar valor na Meta: " + e.getMessage());
         }
     }
 
     public void deleteMeta(String email, String nome) {
-        try {
-            Statement stat = con.createStatement();
-            stat.executeUpdate("delete from meta where email = '" + email + "' AND '" + nome + "'");
-            stat.close();
+        String sql = "DELETE FROM meta WHERE email = ? AND nome = ?";
 
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            stmt.setString(2, nome);
+
+            stmt.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error ao deletar meta");
+            System.err.println("Erro ao deletar meta: " + e.getMessage());
         }
     }
 }

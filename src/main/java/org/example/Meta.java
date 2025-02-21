@@ -80,7 +80,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
             if (validaValor == false) {
                 System.out.println("Não há saldo suficiente na meta para esta retirada.");
             } else {
-                dao.UpdateDebitarMontanteMeta(email, nome, valorDebito);
+                dao.updateDebitarMontanteMeta(email, nome, valorDebito);
                 saldoDao.updateDepositoSaldo(nome, valorDebito);
                 // todo: acrescentar ao fluxo de caixa 
             }
@@ -103,7 +103,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
             if (validaSaldo == false) {
                 System.out.println("Você não possui saldo sufuciente para completar esse deposito");
             } else {
-                dao.UpdateDepositarValorMeta(email, nome, valor);
+                dao.updateDepositarValorMeta(email, nome, valor);
                 saldoDao.updateDebitoSaldo(email, valor);
             }
             // adicionar ao fluxo de caixa
@@ -236,7 +236,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
         } else {
             System.out.println("Informe o novo nome da meta: ");
             String nomeDesejado = entrada.nextLine();
-            dao.UpdateNomeMeta(email, nomeOriginal, nomeDesejado);
+            dao.updateNomeMeta(email, nomeOriginal, nomeDesejado);
         }
     }
 
@@ -251,7 +251,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
             System.out.println("Informe o novo valor da meta: ");
             Float valorDesejado = entrada.nextFloat();
             entrada.nextLine();
-            dao.UpdateValorMeta(email, nome, valorDesejado);
+            dao.updateValorMeta(email, nome, valorDesejado);
         }
     }
 

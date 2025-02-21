@@ -47,7 +47,7 @@ public class DespesasFixas extends OperacaoConta {
 
     @Override
     public void exibirInformacoes() {
-        ArrayList<DespesasFixas> despesasFixas = dao.selectDespesaFixas(email, LocalDate.now());
+        ArrayList<DespesasFixas> despesasFixas = dao.selectDespesasFixas(email, LocalDate.now());
         if (despesasFixas.size() == 0) {
             System.out.println("Não há nenhuma despesa fixa cadastrada.");
         } else {
@@ -71,7 +71,6 @@ public class DespesasFixas extends OperacaoConta {
             System.out.println("3- Modificar valor da despesa;");
             System.out.println("4- Deletar despesa;");
             System.out.println("5- Sair;");
-            // todo: criar função que debita do saldo uma despesa que esta na data de pagar
 
             int resposta = entrada.nextInt();
             entrada.nextLine();
@@ -157,7 +156,7 @@ public class DespesasFixas extends OperacaoConta {
             System.out.println("Informe o novo valor dessa despesa: ");
             float novoValor = entrada.nextFloat();
             entrada.nextLine();
-            dao.UpdateValorDespesa(email, nomeDespesa, novoValor);
+            dao.updateValorDespesa(email, nomeDespesa, novoValor);
         }
     }
 
