@@ -34,7 +34,7 @@ public class DebitoDao {
         }
     }
 
-    public ArrayList<Deposito> selectDepositos(String email, LocalDate data) {
+    public ArrayList<Debito> selectDebitos(String email, LocalDate data) {
         int dataMes = data.getMonthValue();
         int dataAno = data.getYear();
 
@@ -48,10 +48,10 @@ public class DebitoDao {
         LocalDateTime ultimoDiaMesFim = ultimoDiaMes.atTime(LocalTime.MAX);
         long ultimoTimestamp = ultimoDiaMesFim.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
-        ArrayList<Deposito> depositos = new ArrayList<>();
+        ArrayList<Debito> debitos = new ArrayList<>();
 
-        // Query para buscar depósitos dentro do intervalo de timestamp
-        String sql = "SELECT * FROM fluxoCaixaDeposito WHERE email = ? " +
+        // Query para buscar débitos dentro do intervalo de timestamp
+        String sql = "SELECT * FROM fluxoCaixaDebito WHERE email = ? " +
                 "AND data >= ? AND data <= ?";
 
         try (PreparedStatement pstmt = con.prepareStatement(sql)) {
@@ -61,20 +61,19 @@ public class DebitoDao {
 
             ResultSet resultado = pstmt.executeQuery();
 
+            // Itera sobre o resultado e adiciona os débitos à lista
             while (resultado.next()) {
-                Deposito deposito = new Deposito(email);
-                deposito.setValor(resultado.getFloat("deposito"));
-                deposito.setData(resultado.getDate("data").toLocalDate());
-                depositos.add(deposito);
+                Debito debito = new Debito(email);
+                debito.setValor(resultado.getFloat("debito"));
+                debito.setData(resultado.getDate("data").toLocalDate());
+                debitos.add(debito);
             }
 
-            return depositos;
-
         } catch (SQLException e) {
-            System.err.println("Erro ao buscar Depósitos: " + e.getMessage());
+            System.err.println("Erro ao buscar Débitos: " + e.getMessage());
         }
 
-        return null;
+        return debitos;
     }
 
 
