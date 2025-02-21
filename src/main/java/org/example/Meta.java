@@ -58,7 +58,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
             for (Meta meta : metas) {
                 dataset.addValue(meta.getValorMeta(), "Valor da Meta", meta.getNomeMeta());
                 dataset.addValue(meta.getMontante(), "Montante Depositado", meta.getNomeMeta());
-                
+
             }
         }
     
@@ -110,6 +110,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
                 saldoDao.updateDebitoSaldo(email, valor);
                 debitoDao.insertDebito(email, valor, LocalDate.now());
             }
+            // adicionar ao fluxo de caixa
         }
     }
 

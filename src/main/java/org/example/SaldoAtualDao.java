@@ -1,9 +1,6 @@
 package org.example;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class SaldoAtualDao {
 
@@ -30,6 +27,19 @@ public class SaldoAtualDao {
         }
 
         return saldo;
+    }
+
+    public void insertSaldo(String email) {
+        String sql = "INSERT INTO saldoAtual (email,valor) VALUES (?, ?)";
+
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            stmt.setFloat(2, 0);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao inserir Meta: " + e.getMessage());
+        }
     }
 
     public void updateDebitoSaldo(String email, float valor) {
