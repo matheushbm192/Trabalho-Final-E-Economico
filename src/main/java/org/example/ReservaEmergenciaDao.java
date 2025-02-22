@@ -1,9 +1,6 @@
 package org.example;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class ReservaEmergenciaDao {
@@ -14,54 +11,81 @@ public class ReservaEmergenciaDao {
     }
 
     public ReservaEmergencia selectReservaEmergencia(String email) {
-        try (Statement stat = con.createStatement()){
+        String sql = "SELECT * FROM reservaEmergencia WHERE email = ?";
 
-            ResultSet resultado = stat.executeQuery("select * from reservaEmergencia where email = '" + email + "'");
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setString(1, email);  //
+            ResultSet resultado = pstmt.executeQuery();
 
-            ReservaEmergencia reserva = new ReservaEmergencia(email);
-            reserva.setValor(resultado.getFloat("valor"));
-            stat.close();
-
-            return reserva;
+            // Verifica se encontrou algum registro
+            if (resultado.next()) {
+                ReservaEmergencia reserva = new ReservaEmergencia(email);
+                reserva.setValor(resultado.getFloat("valor"));
+                return reserva;
+            } else {
+                System.out.println("Nenhuma reserva encontrada para o email: " + email);
+            }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao buscar Reserva de Emergencia" + e);
+            System.err.println("Erro ao buscar Reserva de Emergência: " + e.getMessage());
         }
+
         return null;
     }
 
 
+
     public void insertReservaEmergencia(String email, float valor) {
-        try (Statement stat = con.createStatement()){
+        String sql = "INSERT INTO reservaEmergencia (email, valor) VALUES (?, ?)";
 
-            stat.executeUpdate("insert into reservaEmergencia(email,valor) values('" + email + "'," + valor + ")");
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            // Define os valores nos placeholders
+            pstmt.setString(1, email);
+            pstmt.setFloat(2, valor);
 
-            // todo: retirar do saldo atual
+            // Executa a query
+            pstmt.executeUpdate();
+
         } catch (SQLException e) {
-            System.err.println("Erro ao inserir Reserva de Emergencia");
+            System.err.println("Erro ao inserir Reserva de Emergência: " + e.getMessage());
         }
     }
+
 
     public void updateDepositarReservaEmergencia(String email, float valor) {
-        try (Statement stat = con.createStatement()){
+        String sql = "UPDATE reservaEmergencia SET valor = valor + ? WHERE email = ?";
 
-            stat.executeUpdate(
-                    "update reservaEmergencia set valor = valor + " + valor + " where email = '" + email + "'");
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            // Define os valores nos placeholders
+            pstmt.setFloat(1, valor);
+            pstmt.setString(2, email);
 
-            // todo: tirar do saldo atual
+            pstmt.executeUpdate();
+
+
+
         } catch (SQLException e) {
-            System.err.println("Erro ao inserir Reserva de Emergencia");
+            System.err.println("Erro ao atualizar Reserva de Emergência: " + e.getMessage());
         }
     }
+
 
     public void updateDebitarReservaEmergencia(String email, float valor) {
-        try (Statement stat = con.createStatement()){
+        String sql = "UPDATE reservaEmergencia SET valor = valor - ? WHERE email = ?";
 
-            stat.executeUpdate(
-                    "update reservaEmergencia set valor = valor - " + valor + " where email = '" + email + "'");
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            // Define os valores nos placeholders
+            pstmt.setFloat(1, valor);
+            pstmt.setString(2, email);
+
+            // Executa a query
+            pstmt.executeUpdate();
+
+
 
         } catch (SQLException e) {
-            System.err.println("Erro ao inserir Reserva de Emergencia");
+            System.err.println("Erro ao debitar Reserva de Emergência: " + e.getMessage());
         }
     }
+
 }

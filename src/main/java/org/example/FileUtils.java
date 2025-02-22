@@ -18,7 +18,7 @@ public class FileUtils {
         }
         reader.close();
         time = System.currentTimeMillis() - time;
-        LOG.info("O arquivo " + filename + " foi lido em " + time + "ms");
+        //LOG.info("O arquivo " + filename + " foi lido em " + time + "ms");
         return sb.toString();
     }
 }

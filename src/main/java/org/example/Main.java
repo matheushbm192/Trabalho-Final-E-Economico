@@ -23,7 +23,6 @@ public class Main {
         }
 
         Usuario usuario = Login.login();
-        System.out.println(usuario.getNome());
 
         while (true) {
             System.out.println("O que deseja consultar/manipular? (Tecle o numero referente a ação)");

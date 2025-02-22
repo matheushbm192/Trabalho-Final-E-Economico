@@ -85,7 +85,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
             } else {
                 dao.updateDebitarMontanteMeta(email, nome, valorDebito);
                 saldoDao.updateDepositoSaldo(nome, valorDebito);
-                depositoDao.insertDeposito(email, valorDebito, null);
+                depositoDao.insertDeposito(email, valorDebito, LocalDate.now());
             }
         }
     }
@@ -226,7 +226,7 @@ public class Meta extends OperacaoConta implements OperacaoFinanceira {
             System.out.println("Essa meta não existe. Portanto, não pode ser apagada.");
         } else {
             Meta meta = dao.selectMeta(email, nome);
-            float valorMeta = meta.getValorMeta();
+            float valorMeta = meta.getMontante();
             depositoDao.insertDeposito(email, valorMeta, LocalDate.now());
             dao.deleteMeta(email, nome);
         }

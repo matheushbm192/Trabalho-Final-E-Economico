@@ -78,40 +78,41 @@ public class ReservaEmergencia extends OperacaoConta implements OperacaoFinancei
     }
 
     public void menu() {
+        boolean continuar = true;
+        while (continuar){
+            System.out.println("Menu reserva de emergência:");
+            System.out.println("1- Crie sua primeira reserva de emergência;");
+            System.out.println("2- Exibir;");
+            System.out.println("3- Depositar;");
+            System.out.println("4- Debitar;");
+            System.out.println("5- Sair;");
 
-        System.out.println("Menu reserva de emergência:");
-        System.out.println("1- Crie sua primeira reserva de emergência;");
-        System.out.println("2- Exibir;");
-        System.out.println("3- Depositar;");
-        System.out.println("4- Debitar;");
-        System.out.println("5- Sair;");
+            Scanner entrada = new Scanner(System.in);
+            int resposta = entrada.nextInt();
+            entrada.nextLine();
 
-        Scanner entrada = new Scanner(System.in);
-        int resposta = entrada.nextInt();
-        entrada.nextLine();
+            switch (resposta) {
+                case 1:
+                    registrarReservaEmergencia();
+                    break;
+                case 2:
+                    exibirInformacoes();
+                    break;
+                case 3:
+                    depositar();
+                    break;
+                case 4:
+                    debitar();
+                    break;
+                case 5:
+                    continuar = false;
+                    break;
 
-        switch (resposta) {
-            case 1:
-                registrarReservaEmergencia();
-                break;
-            case 2:
-                exibirInformacoes();
-                break;
-            case 3:
-                depositar();
-                break;
-            case 4:
-                debitar();
-                break;
-            case 5:
-                // sair();
-                break;
-
-            default:
-                System.out.println("Resposta inválida. Tente novamente.");
-                break;
+                default:
+                    System.out.println("Resposta inválida. Tente novamente.");
+                    break;
+            }
         }
-        menu();
     }
 
     public boolean verificaReserva() {
